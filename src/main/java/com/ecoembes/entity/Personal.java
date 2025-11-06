@@ -8,17 +8,14 @@ public class Personal {
 	protected String nombre;
 	protected String correo;
 	protected String contrasena;
-	protected List<Sesion> sesiones;
 	protected List<Asignacion> asignaciones;
 
-	public Personal(int idPersonal, String nombre, String correo, String contrasena, List<Sesion> sesiones,
-			List<Asignacion> asignaciones) {
+	public Personal(int idPersonal, String nombre, String correo, String contrasena, List<Asignacion> asignaciones) {
 		super();
 		this.idPersonal = idPersonal;
 		this.nombre = nombre;
 		this.correo = correo;
 		this.contrasena = contrasena;
-		this.sesiones = sesiones;
 		this.asignaciones = asignaciones;
 	}
 
@@ -54,14 +51,6 @@ public class Personal {
 		this.contrasena = contrasena;
 	}
 
-	public List<Sesion> getSesiones() {
-		return sesiones;
-	}
-
-	public void setSesiones(List<Sesion> sesiones) {
-		this.sesiones = sesiones;
-	}
-
 	public List<Asignacion> getAsignaciones() {
 		return asignaciones;
 	}
@@ -72,7 +61,7 @@ public class Personal {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(asignaciones, contrasena, correo, idPersonal, nombre, sesiones);
+		return Objects.hash(asignaciones, contrasena, correo, idPersonal, nombre);
 	}
 
 	@Override
@@ -86,8 +75,10 @@ public class Personal {
 		Personal other = (Personal) obj;
 		return Objects.equals(asignaciones, other.asignaciones) && Objects.equals(contrasena, other.contrasena)
 				&& Objects.equals(correo, other.correo) && idPersonal == other.idPersonal
-				&& Objects.equals(nombre, other.nombre) && Objects.equals(sesiones, other.sesiones);
+				&& Objects.equals(nombre, other.nombre);
 	}
+
+	
 
 	
 	
