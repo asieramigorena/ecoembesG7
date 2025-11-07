@@ -7,10 +7,10 @@ public class Ruta {
 	protected int idRuta;
 	protected double duracion;
 	protected double distancia;
-	protected Camion camion;
+	protected int camion;
 	protected List<Contenedor> contenedores;
 
-	public Ruta(int idRuta, double duracion, double distancia, Camion camion, List<Contenedor> contenedores) {
+	public Ruta(int idRuta, double duracion, double distancia, int camion, List<Contenedor> contenedores) {
 		super();
 		this.idRuta = idRuta;
 		this.duracion = duracion;
@@ -43,11 +43,11 @@ public class Ruta {
 		this.distancia = distancia;
 	}
 
-	public Camion getCamion() {
+	public int getCamion() {
 		return camion;
 	}
 
-	public void setCamion(Camion camion) {
+	public void setCamion(int camion) {
 		this.camion = camion;
 	}
 

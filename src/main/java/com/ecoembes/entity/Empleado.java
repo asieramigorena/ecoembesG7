@@ -1,22 +1,22 @@
 package com.ecoembes.entity;
 
-import java.util.List;
+import java.time.LocalTime;
 import java.util.Objects;
 
-public class Personal {
+public class Empleado {
 	protected int idPersonal;
 	protected String nombre;
 	protected String correo;
 	protected String contrasena;
-	protected List<Asignacion> asignaciones;
+	private LocalTime token;
 
-	public Personal(int idPersonal, String nombre, String correo, String contrasena, List<Asignacion> asignaciones) {
+	public Empleado(int idPersonal, String nombre, String correo, String contrasena) {
 		super();
 		this.idPersonal = idPersonal;
 		this.nombre = nombre;
 		this.correo = correo;
 		this.contrasena = contrasena;
-		this.asignaciones = asignaciones;
+		this.token = null;
 	}
 
 	public int getIdPersonal() {
@@ -50,18 +50,22 @@ public class Personal {
 	public void setContrasena(String contrasena) {
 		this.contrasena = contrasena;
 	}
-
-	public List<Asignacion> getAsignaciones() {
-		return asignaciones;
+	
+	public LocalTime getToken() {
+		return token;
+	}
+	
+	public void setToken() {
+		this.token = LocalTime.now();
 	}
 
-	public void setAsignaciones(List<Asignacion> asignaciones) {
-		this.asignaciones = asignaciones;
+	public void setTokenNull() {
+		this.token = null;
 	}
-
+	
 	@Override
 	public int hashCode() {
-		return Objects.hash(asignaciones, contrasena, correo, idPersonal, nombre);
+		return Objects.hash(contrasena, correo, idPersonal, nombre);
 	}
 
 	@Override
@@ -72,8 +76,8 @@ public class Personal {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Personal other = (Personal) obj;
-		return Objects.equals(asignaciones, other.asignaciones) && Objects.equals(contrasena, other.contrasena)
+		Empleado other = (Empleado) obj;
+		return Objects.equals(contrasena, other.contrasena)
 				&& Objects.equals(correo, other.correo) && idPersonal == other.idPersonal
 				&& Objects.equals(nombre, other.nombre);
 	}

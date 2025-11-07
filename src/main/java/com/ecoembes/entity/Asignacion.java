@@ -6,14 +6,14 @@ import java.util.Objects;
 
 public class Asignacion {
 	protected int idAsignacion;
-	protected Personal personal;
+	protected Empleado personal;
 	protected PlantaReciclaje plantaAsignada;
 	protected List<Contenedor> contenedores;
 	protected int numContenedores;
 	protected double totalCapacidad;
 	protected Date fechaAsignacion;
 	
-	public Asignacion(int idAsignacion, Personal personal, PlantaReciclaje plantaAsignada,
+	public Asignacion(int idAsignacion, Empleado personal, PlantaReciclaje plantaAsignada,
 			List<Contenedor> contenedores, int numContenedores, double totalCapacidad, Date fechaAsignacion) {
 		super();
 		this.idAsignacion = idAsignacion;
@@ -33,11 +33,11 @@ public class Asignacion {
 		this.idAsignacion = idAsignacion;
 	}
 
-	public Personal getPersonal() {
+	public Empleado getPersonal() {
 		return personal;
 	}
 
-	public void setPersonal(Personal personal) {
+	public void setPersonal(Empleado personal) {
 		this.personal = personal;
 	}
 
