@@ -4,33 +4,33 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class Asignacion {
-	protected int idAsignacion;
+public class Jornada {
+	protected int idJornada;
 	protected Empleado personal;
 	protected PlantaReciclaje plantaAsignada;
 	protected List<Contenedor> contenedores;
 	protected int numContenedores;
 	protected double totalCapacidad;
-	protected Date fechaAsignacion;
+	protected Date fechaJornada;
 	
-	public Asignacion(int idAsignacion, Empleado personal, PlantaReciclaje plantaAsignada,
-			List<Contenedor> contenedores, int numContenedores, double totalCapacidad, Date fechaAsignacion) {
+	public Jornada(int idJornada, Empleado personal, PlantaReciclaje plantaAsignada,
+			List<Contenedor> contenedores, int numContenedores, double totalCapacidad, Date fechaJornada) {
 		super();
-		this.idAsignacion = idAsignacion;
+		this.idJornada = idJornada;
 		this.personal = personal;
 		this.plantaAsignada = plantaAsignada;
 		this.contenedores = contenedores;
 		this.numContenedores = numContenedores;
 		this.totalCapacidad = totalCapacidad;
-		this.fechaAsignacion = fechaAsignacion;
+		this.fechaJornada = fechaJornada;
 	}
 
-	public int getIdAsignacion() {
-		return idAsignacion;
+	public int getIdJornada() {
+		return idJornada;
 	}
 
-	public void setIdAsignacion(int idAsignacion) {
-		this.idAsignacion = idAsignacion;
+	public void setIdJornada(int idJornada) {
+		this.idJornada = idJornada;
 	}
 
 	public Empleado getPersonal() {
@@ -73,17 +73,18 @@ public class Asignacion {
 		this.totalCapacidad = totalCapacidad;
 	}
 
-	public Date getFechaAsignacion() {
-		return fechaAsignacion;
+	public Date getFechaJornada() {
+		return fechaJornada;
 	}
 
-	public void setFechaAsignacion(Date fechaAsignacion) {
-		this.fechaAsignacion = fechaAsignacion;
+	public void setFechaJornada(Date fechaJornada) {
+		this.fechaJornada = fechaJornada;
 	}
+	
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(contenedores, fechaAsignacion, idAsignacion, numContenedores, personal, plantaAsignada,
+		return Objects.hash(contenedores, fechaJornada, idJornada, numContenedores, personal, plantaAsignada,
 				totalCapacidad);
 	}
 
@@ -95,9 +96,9 @@ public class Asignacion {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Asignacion other = (Asignacion) obj;
+		Jornada other = (Jornada) obj;
 		return Objects.equals(contenedores, other.contenedores)
-				&& Objects.equals(fechaAsignacion, other.fechaAsignacion) && idAsignacion == other.idAsignacion
+				&& Objects.equals(fechaJornada, other.fechaJornada) && idJornada == other.idJornada
 				&& numContenedores == other.numContenedores && Objects.equals(personal, other.personal)
 				&& Objects.equals(plantaAsignada, other.plantaAsignada)
 				&& Double.doubleToLongBits(totalCapacidad) == Double.doubleToLongBits(other.totalCapacidad);

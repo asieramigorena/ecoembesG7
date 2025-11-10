@@ -7,14 +7,14 @@ public class PlantaReciclaje {
 	protected int id;
 	protected String nombre;
 	protected double capTotal;
-	protected List<Asignacion> asignaciones;
+	protected List<Jornada> Jornadas;
 
-	public PlantaReciclaje(int id, String nombre, double capTotal, List<Asignacion> asignaciones) {
+	public PlantaReciclaje(int id, String nombre, double capTotal, List<Jornada> Jornadas) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.capTotal = capTotal;
-		this.asignaciones = asignaciones;
+		this.Jornadas = Jornadas;
 	}
 
 	public int getId() {
@@ -41,17 +41,17 @@ public class PlantaReciclaje {
 		this.capTotal = capTotal;
 	}
 
-	public List<Asignacion> getAsignaciones() {
-		return asignaciones;
+	public List<Jornada> getAsignaciones() {
+		return Jornadas;
 	}
 
-	public void setAsignaciones(List<Asignacion> asignaciones) {
-		this.asignaciones = asignaciones;
+	public void setAsignaciones(List<Jornada> Jornadas) {
+		this.Jornadas = Jornadas;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(asignaciones, capTotal, id, nombre);
+		return Objects.hash(Jornadas, capTotal, id, nombre);
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class PlantaReciclaje {
 		if (getClass() != obj.getClass())
 			return false;
 		PlantaReciclaje other = (PlantaReciclaje) obj;
-		return Objects.equals(asignaciones, other.asignaciones)
+		return Objects.equals(Jornadas, other.Jornadas)
 				&& Double.doubleToLongBits(capTotal) == Double.doubleToLongBits(other.capTotal) && id == other.id
 				&& Objects.equals(nombre, other.nombre);
 	}
