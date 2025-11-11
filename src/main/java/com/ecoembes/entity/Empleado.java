@@ -4,15 +4,16 @@ import java.time.LocalTime;
 import java.util.Objects;
 
 public class Empleado {
+	private static int contadorId = 0;
 	protected int idPersonal;
 	protected String nombre;
 	protected String correo;
 	protected String contrasena;
 	private LocalTime token;
 
-	public Empleado(int idPersonal, String nombre, String correo, String contrasena) {
+	public Empleado(String nombre, String correo, String contrasena) {
 		super();
-		this.idPersonal = idPersonal;
+		this.idPersonal = contadorId++;
 		this.nombre = nombre;
 		this.correo = correo;
 		this.contrasena = contrasena;
@@ -21,10 +22,6 @@ public class Empleado {
 
 	public int getIdPersonal() {
 		return idPersonal;
-	}
-
-	public void setIdPersonal(int idPersonal) {
-		this.idPersonal = idPersonal;
 	}
 
 	public String getNombre() {

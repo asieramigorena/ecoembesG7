@@ -4,15 +4,16 @@ import java.util.List;
 import java.util.Objects;
 
 public class Ruta {
+	private static int contadorId = 0;
 	protected int idRuta;
 	protected double duracion;
 	protected double distancia;
 	protected int camion;
 	protected List<Contenedor> contenedores;
 
-	public Ruta(int idRuta, double duracion, double distancia, int camion, List<Contenedor> contenedores) {
+	public Ruta(double duracion, double distancia, int camion, List<Contenedor> contenedores) {
 		super();
-		this.idRuta = idRuta;
+		this.idRuta = contadorId++;
 		this.duracion = duracion;
 		this.distancia = distancia;
 		this.camion = camion;

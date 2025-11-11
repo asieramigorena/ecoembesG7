@@ -1,6 +1,5 @@
 package com.ecoembes.entity;
 
-import java.util.List;
 import java.util.Objects;
 
 public class Contenedor {
@@ -11,6 +10,7 @@ public class Contenedor {
 		ROJO //Lleno
 	}
 	
+	private static int contadorId = 0;
 	protected int idContenedor;
 	protected String ubicacion;
 	protected int codPostal;
@@ -18,10 +18,10 @@ public class Contenedor {
 	protected nivelLenado nivelActual;
 	protected int numEnvases;
 	
-	public Contenedor(int idContenedor, String ubicacion, int codPostal, double capMaxima, nivelLenado nivelActual,
+	public Contenedor(String ubicacion, int codPostal, double capMaxima, nivelLenado nivelActual,
 			int numEnvases) {
 		super();
-		this.idContenedor = idContenedor;
+		this.idContenedor = contadorId++;
 		this.ubicacion = ubicacion;
 		this.codPostal = codPostal;
 		this.capMaxima = capMaxima;
@@ -96,10 +96,4 @@ public class Contenedor {
 				&& nivelActual == other.nivelActual && numEnvases == other.numEnvases
 				&& Objects.equals(ubicacion, other.ubicacion);
 	}
-	
-	
-	
-	
-	
-
 }

@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
+import com.ecoembes.dto.EmpleadoDTO;
 import com.ecoembes.service.EmpleadoService;
 
 @RestController
@@ -29,10 +29,10 @@ public class EmpeladoController {
 	@PostMapping()
 	public ResponseEntity<EmpleadoDTO> login(@RequestParam String correo, @RequestParam String contrasena) {
 		try {
-			empleadoService.login(correo, contrasena);
-			return ResponseEntity.ok("Sesion iniciada correctamente");
+			EmpleadoDTO actual = empleadoService.login(correo, contrasena);
+			return new ResponseEntity<>(actual, HttpStatus.OK);
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 	}
 }

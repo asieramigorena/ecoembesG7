@@ -1,16 +1,16 @@
 package com.ecoembes.entity;
 
-import java.util.List;
 import java.util.Objects;
 
 public class PlantaReciclaje {
+	protected static int contadorId = 0;
 	protected int id;
 	protected String nombre;
 	protected double capTotal;
 
-	public PlantaReciclaje(int id, String nombre, double capTotal) {
+	public PlantaReciclaje(String nombre, double capTotal) {
 		super();
-		this.id = id;
+		this.id = contadorId++;
 		this.nombre = nombre;
 		this.capTotal = capTotal;
 	}
