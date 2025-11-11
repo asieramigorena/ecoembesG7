@@ -1,6 +1,6 @@
 package com.ecoembes.entity;
 
-import java.time.LocalTime;
+import java.time.LocalTime; 
 import java.util.Objects;
 
 public class Empleado {
