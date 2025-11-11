@@ -17,10 +17,9 @@ public class Contenedor {
 	protected double capMaxima;
 	protected nivelLenado nivelActual;
 	protected int numEnvases;
-	protected List<Asignacion> asignaciones;
 	
 	public Contenedor(int idContenedor, String ubicacion, int codPostal, double capMaxima, nivelLenado nivelActual,
-			int numEnvases, List<Asignacion> asignaciones) {
+			int numEnvases) {
 		super();
 		this.idContenedor = idContenedor;
 		this.ubicacion = ubicacion;
@@ -28,7 +27,6 @@ public class Contenedor {
 		this.capMaxima = capMaxima;
 		this.nivelActual = nivelActual;
 		this.numEnvases = numEnvases;
-		this.asignaciones = asignaciones;
 	}
 
 	public int getIdContenedor() {
@@ -79,17 +77,9 @@ public class Contenedor {
 		this.numEnvases = numEnvases;
 	}
 
-	public List<Asignacion> getAsignaciones() {
-		return asignaciones;
-	}
-
-	public void setAsignaciones(List<Asignacion> asignaciones) {
-		this.asignaciones = asignaciones;
-	}
-
 	@Override
 	public int hashCode() {
-		return Objects.hash(asignaciones, capMaxima, codPostal, idContenedor, nivelActual, numEnvases, ubicacion);
+		return Objects.hash(capMaxima, codPostal, idContenedor, nivelActual, numEnvases, ubicacion);
 	}
 
 	@Override
@@ -101,8 +91,7 @@ public class Contenedor {
 		if (getClass() != obj.getClass())
 			return false;
 		Contenedor other = (Contenedor) obj;
-		return Objects.equals(asignaciones, other.asignaciones)
-				&& Double.doubleToLongBits(capMaxima) == Double.doubleToLongBits(other.capMaxima)
+		return Double.doubleToLongBits(capMaxima) == Double.doubleToLongBits(other.capMaxima)
 				&& codPostal == other.codPostal && idContenedor == other.idContenedor
 				&& nivelActual == other.nivelActual && numEnvases == other.numEnvases
 				&& Objects.equals(ubicacion, other.ubicacion);

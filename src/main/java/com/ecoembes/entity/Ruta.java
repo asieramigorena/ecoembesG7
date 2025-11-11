@@ -78,6 +78,4 @@ public class Ruta {
 				&& Double.doubleToLongBits(duracion) == Double.doubleToLongBits(other.duracion)
 				&& idRuta == other.idRuta;
 	}
-	
-
 }
