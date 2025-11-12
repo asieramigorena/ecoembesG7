@@ -21,12 +21,15 @@ public class EmpleadoService {
 			throw new Exception("Credenciales invalidas");
 		}
 		for (Empleado empleado : empleados) {
-			if (empleado.getToken() != null) {
-				throw new Exception("El usuario " + empleado.getCorreo() + " ya tiene una sesion iniciada");
-			}
-			else if (empleado.getCorreo().equals(correo) && empleado.getContrasena().equals(contrasena)) {
-				empleado.setToken();
-				return toDTO(empleado);
+			if (empleado.getCorreo().equals(correo)) {
+				if (empleado.getToken() != null) {
+					throw new Exception("El usuario " + empleado.getCorreo() + " ya tiene una sesion iniciada");
+				}
+				else if (empleado.getContrasena().equals(contrasena)) {
+					empleado.setToken();
+					return toDTO(empleado);
+				}
+				break;
 			}
 		}
 		throw new Exception("Credenciales invalidas");
@@ -34,23 +37,20 @@ public class EmpleadoService {
 	
 	public void logout(String correo) throws Exception {
 		for (Empleado empleado : empleados) {
-			if (empleado.getToken() != null && empleado.getCorreo().equals(correo)) {
-				empleado.setTokenNull();
-				return;
-			} else if (empleado.getCorreo().equals(correo)) {
-				throw new Exception("No hay ninguna sesion iniciada para el usuario: " + correo);
+			if (empleado.getCorreo().equals(correo)) {
+				if (empleado.getToken() != null) {
+					empleado.setTokenNull();
+					return;
+				} else {
+					throw new Exception("No hay ninguna sesion iniciada para el usuario: " + correo);
+				}
 			}
 		}
-		throw new Exception("No hay ninguna sesion iniciada");
+		throw new Exception("No se ha encontrado el empleado con correo: " + correo);
 	}
 	
 	private EmpleadoDTO toDTO (Empleado empleado) {
-		EmpleadoDTO dto = new EmpleadoDTO();
-		dto.setIdPersonal(empleado.getIdPersonal());
-		dto.setNombre(empleado.getNombre());
-		dto.setCorreo(empleado.getCorreo());
-		dto.setContrasena(empleado.getContrasena());
-		return dto;
+		return new EmpleadoDTO(empleado.getCorreo());
 	}
 }
 

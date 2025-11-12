@@ -26,13 +26,31 @@ public class EmpeladoController {
 	    @ApiResponse(responseCode = "200", description = "Sesion iniciada correctamente"),
 	    @ApiResponse(responseCode = "400", description = "Error en el inicio de sesion")
 	})
-	@PostMapping()
-	public ResponseEntity<EmpleadoDTO> login(@RequestParam String correo, @RequestParam String contrasena) {
+	@PostMapping("/login")
+	public ResponseEntity<EmpleadoDTO> login(@RequestParam("Correo") String correo, @RequestParam("Contraseña") String contrasena) {
 		try {
 			EmpleadoDTO actual = empleadoService.login(correo, contrasena);
 			return new ResponseEntity<>(actual, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@Operation(summary = "Cerrar sesion de un empleado")
+	@ApiResponses(value = {
+	    @ApiResponse(responseCode = "200", description = "Sesion cerrada correctamente"),
+	    @ApiResponse(responseCode = "400", description = "Error en el cierre de sesion")
+	})
+	@PostMapping("/logout")
+	public ResponseEntity<Void> logout(@RequestParam("Correo") String correo) {
+		if (correo.isBlank() || correo == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		try {
+			empleadoService.logout(correo);
+			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 }
