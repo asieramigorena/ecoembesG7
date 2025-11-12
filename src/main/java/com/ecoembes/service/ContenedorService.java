@@ -1,62 +1,46 @@
 package com.ecoembes.service;
 
-import java.util.ArrayList; 
+import java.util.ArrayList;
+import java.util.Random;
 
 import org.springframework.stereotype.Service;
 
-import com.ecoembes.dto.ContenedorDTO;
 import com.ecoembes.entity.Contenedor;
 
 @Service
 public class ContenedorService {
-	private ArrayList<Contenedor> contenedores = new ArrayList<>();
 	
-	public ContenedorService() {
-		for (int i = 1; i <= 15; i++) {
-			
-            Contenedor c = new Contenedor(
-                "Ubicacion " + i, 
-                28000 + i, 
-                100.0, 
-                Contenedor.nivelLenado.NARANJA,
-                i * 2
-            );
-            contenedores.add(c);
-        }
+	
+	public static void actualizarContenedores(){
+		ArrayList<Contenedor> contenedores = new ArrayList<>();
+		contenedores = EmpleadoService.getContenedores();
 		
-	}
-	
-	
-	public ArrayList<ContenedorDTO> getContsPorZona (int codPostal) {
-		ArrayList<ContenedorDTO> listaConts = new ArrayList<ContenedorDTO>();
-		for(Contenedor cont : contenedores) {
-			if(cont.getCodPostal() == codPostal) {
-				listaConts.add(toDTO(cont));
+		for (Contenedor cont : contenedores) {
+			Random random = new Random();
+			int llenado = random.nextInt(2 - 0 + 1);
+			int numEnvases = llenado * 300;
+			cont.setNumEnvases(numEnvases);
+			 switch (llenado) {
+			    case 0:
+			        cont.setNivelActual(Contenedor.nivelLenado.VERDE);
+			        break;
+			    case 1:
+			    	cont.setNivelActual(Contenedor.nivelLenado.NARANJA);
+			        break;
+			    case 2:
+			    	cont.setNivelActual(Contenedor.nivelLenado.ROJO);
+			        break;
 			}
+			 EmpleadoService.setContenedores(contenedores);
 		}	
-		return listaConts;
 	}
+
 	
 	
-	public ContenedorDTO toDTO(Contenedor contenedor) {
-	    ContenedorDTO dto = new ContenedorDTO();
-	    dto.setIdContenedor(contenedor.getIdContenedor());
-	    dto.setUbicacion(contenedor.getUbicacion());
-	    dto.setCodPostal(contenedor.getCodPostal());
-	    dto.setCapMaxima(contenedor.getCapMaxima());
-	    switch (contenedor.getNivelActual()) {
-	    case VERDE:
-	        dto.setNivelActual(ContenedorDTO.nivelLenado.VERDE);
-	        break;
-	    case NARANJA:
-	        dto.setNivelActual(ContenedorDTO.nivelLenado.NARANJA);
-	        break;
-	    case ROJO:
-	        dto.setNivelActual(ContenedorDTO.nivelLenado.ROJO);
-	        break;
-	}
-	    dto.setNumEnvases(contenedor.getNumEnvases());
-	    return dto;
-	}
+	
+	
+	
+	
+	
 
 }

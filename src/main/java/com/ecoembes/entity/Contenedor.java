@@ -18,15 +18,13 @@ public class Contenedor {
 	protected nivelLenado nivelActual;
 	protected int numEnvases;
 	
-	public Contenedor(String ubicacion, int codPostal, double capMaxima, nivelLenado nivelActual,
-			int numEnvases) {
+	public Contenedor(String ubicacion, int codPostal, double capMaxima) {
 		super();
 		this.idContenedor = contadorId++;
 		this.ubicacion = ubicacion;
 		this.codPostal = codPostal;
 		this.capMaxima = capMaxima;
-		this.nivelActual = nivelActual;
-		this.numEnvases = numEnvases;
+		
 	}
 
 	public int getIdContenedor() {
