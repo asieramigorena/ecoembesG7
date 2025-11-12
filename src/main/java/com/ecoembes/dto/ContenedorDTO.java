@@ -18,15 +18,13 @@ public class ContenedorDTO {
 	
 	public ContenedorDTO() {}
 
-	public ContenedorDTO(int idContenedor, String ubicacion, int codPostal, double capMaxima, nivelLenado nivelActual,
-			int numEnvases) {
+	public ContenedorDTO(String ubicacion, int codPostal, double capMaxima) {
 		super();
-		this.idContenedor = idContenedor;
+		
 		this.ubicacion = ubicacion;
 		this.codPostal = codPostal;
 		this.capMaxima = capMaxima;
-		this.nivelActual = nivelActual;
-		this.numEnvases = numEnvases;
+		
 	}
 
 	public int getIdContenedor() {

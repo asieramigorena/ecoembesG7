@@ -18,7 +18,7 @@ public class ContenedorService {
 		for (Contenedor cont : contenedores) {
 			Random random = new Random();
 			int llenado = random.nextInt(2 - 0 + 1);
-			int numEnvases = llenado * 300;
+			int numEnvases = (llenado + 1) * 300;
 			cont.setNumEnvases(numEnvases);
 			 switch (llenado) {
 			    case 0:

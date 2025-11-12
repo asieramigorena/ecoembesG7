@@ -61,19 +61,17 @@ public class EmpeladoController {
 	}
 	
 	
-	  @PostMapping("/crear")
-	    public ResponseEntity<Contenedor> crearContenedor(
-	            @RequestParam ("Ubicacion") String ubicacion,
-	            @RequestParam ("Codigo Postal") int codPostal,
-	            @RequestParam ("Capacidad Maxima") double capMaxima) {
+	 @PostMapping("/crear")
+	 public ResponseEntity<ContenedorDTO> crearContenedor(
+	        @RequestParam ("Ubicacion") String ubicacion,
+	        @RequestParam ("Codigo Postal") int codPostal,
+	        @RequestParam ("Capacidad Maxima") double capMaxima) {
 
-	        // Guardamos el contenedor
-	        EmpleadoService.crearContenedor(ubicacion, codPostal, capMaxima);
+	    EmpleadoService.crearContenedor(ubicacion, codPostal, capMaxima);
 
-	        // Devolvemos solo los datos recibidos
-	        Contenedor respuesta = new Contenedor(ubicacion, codPostal, capMaxima);
-	        return new ResponseEntity<>(respuesta, HttpStatus.CREATED);
-	    }
+	    ContenedorDTO respuesta = new ContenedorDTO (ubicacion, codPostal, capMaxima);
+	    return new ResponseEntity<>(respuesta, HttpStatus.CREATED);
+	}
 	
 	
     @PostMapping("/actualizar")
