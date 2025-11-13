@@ -74,7 +74,4 @@ public class ContenedorDTO {
 	public void setNumEnvases(int numEnvases) {
 		this.numEnvases = numEnvases;
 	}
-	
-	
-
 }

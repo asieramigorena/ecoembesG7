@@ -1,0 +1,72 @@
+package com.ecoembes.facade;
+
+import java.util.ArrayList;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ecoembes.dto.ContenedorDTO;
+import com.ecoembes.service.ContenedorService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
+@RestController
+@RequestMapping("/ecoembes/contenedor")
+public class ContenedorController {
+	
+	private final ContenedorService contenedorService;
+	public ContenedorController(ContenedorService ContenedorService) {
+		this.contenedorService = ContenedorService;
+	}
+	
+	@Operation(summary = "Crear un nuevo contenedor")
+	@ApiResponses(value = {
+	    @ApiResponse(responseCode = "201", description = "Contenedor creado correctamente"),
+	    @ApiResponse(responseCode = "400", description = "Error en la creacion del contenedor")
+	})
+	@PostMapping("/crear")
+	public ResponseEntity<ContenedorDTO> crearContenedor(
+			@RequestParam ("Ubicacion") String ubicacion,
+	        @RequestParam ("Codigo Postal") int codPostal,
+	        @RequestParam ("Capacidad Maxima") double capMaxima) {
+
+	    contenedorService.crearContenedor(ubicacion, codPostal, capMaxima);
+
+	    ContenedorDTO respuesta = new ContenedorDTO (ubicacion, codPostal, capMaxima);
+	    return new ResponseEntity<>(respuesta, HttpStatus.CREATED);
+	}
+	
+	@Operation(summary = "Actualizar el estado de los contenedores")
+	@ApiResponses(value = {
+	    @ApiResponse(responseCode = "201", description = "Contenedores actualizados correctamente"),
+	    @ApiResponse(responseCode = "400", description = "Error en la actualizacion de los contenedores")
+	})
+    @PostMapping("/actualizar")
+    public ResponseEntity<Void> actualizarContenedores() {
+        contenedorService.actualizarContenedores();
+        return ResponseEntity.ok().build();
+    }
+
+	
+	@Operation(summary = "Buscar contenedores por zona")
+	@ApiResponses(value = {
+	    @ApiResponse(responseCode = "201", description = "Contenedores obtenidos correctamente"),
+	    @ApiResponse(responseCode = "400", description = "Error en la obtencion de los contenedores")
+	})
+	@GetMapping("/zona")
+    public ResponseEntity<ArrayList<ContenedorDTO>> getContsPorZona(@RequestParam("codPostal") int codPostal) {
+        try {
+            ArrayList<ContenedorDTO> lista = contenedorService.getContsPorZona(codPostal);
+            return new ResponseEntity<>(lista, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+}

@@ -24,7 +24,7 @@ public class Contenedor {
 		this.ubicacion = ubicacion;
 		this.codPostal = codPostal;
 		this.capMaxima = capMaxima;
-		
+		this.nivelActual = nivelLenado.VERDE; //Valor por defecto
 	}
 
 	public int getIdContenedor() {
