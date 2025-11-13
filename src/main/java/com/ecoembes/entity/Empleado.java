@@ -78,11 +78,4 @@ public class Empleado {
 				&& Objects.equals(correo, other.correo) && idPersonal == other.idPersonal
 				&& Objects.equals(nombre, other.nombre);
 	}
-
-	
-
-	
-	
-	
-
 }

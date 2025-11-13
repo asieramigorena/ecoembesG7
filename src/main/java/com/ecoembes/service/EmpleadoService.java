@@ -9,11 +9,15 @@ import com.ecoembes.entity.Empleado;
 
 @Service
 public class EmpleadoService {
-	private ArrayList<Empleado> empleados = new ArrayList<>();
+	private static ArrayList<Empleado> empleados = new ArrayList<>();
 	
 	public EmpleadoService() {
 		empleados.add(new Empleado("Jose Maria", "josemari@correo.com", "contrasena1"));
 		empleados.add(new Empleado("Ana Lopez", "analope@correo.com", "contrasena2"));
+	}
+	
+	public static ArrayList<Empleado> getEmpleados() {
+		return empleados;
 	}
 	
 	public EmpleadoDTO login(String correo, String contrasena) throws Exception {
@@ -54,7 +58,3 @@ public class EmpleadoService {
 		return new EmpleadoDTO(empleado.getCorreo());
 	}
 }
-
-
-
-

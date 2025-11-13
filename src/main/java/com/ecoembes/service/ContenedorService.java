@@ -7,10 +7,12 @@ import org.springframework.stereotype.Service;
 
 import com.ecoembes.dto.ContenedorDTO;
 import com.ecoembes.entity.Contenedor;
+import com.ecoembes.entity.Empleado;
 
 @Service
 public class ContenedorService {
 	private ArrayList<Contenedor> contenedores = new ArrayList<>();
+	private ArrayList<Empleado> empleados = new ArrayList<>(EmpleadoService.getEmpleados());
 
 	public ContenedorService() {
 		contenedores.add(new Contenedor("Calle Falsa 123", 28080, 1000));
@@ -68,6 +70,20 @@ public class ContenedorService {
 			}
 		}	
 		return listaConts;
+	}
+	
+	public void alertaSaturacion() {
+		int contadorRojo = 0;
+		for(Contenedor cont : contenedores) {
+			if(cont.getNivelActual() == Contenedor.nivelLenado.ROJO) {
+				contadorRojo++;
+			}
+		}
+		if (contadorRojo / contenedores.size() > 0.8) {
+			for(Empleado emp : empleados) {
+				System.out.println("Alerta enviada a: " + emp.getCorreo());
+			}
+		}
 	}
 	
 	public ContenedorDTO contenedorToDTO(Contenedor contenedor) {
