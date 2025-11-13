@@ -1,5 +1,6 @@
 package com.ecoembes.facade;
 
+import com.ecoembes.excepciones.EmpleadoExcepciones;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,34 +24,48 @@ public class EmpeladoController {
 	
 	@Operation(summary = "Iniciar sesion de un empleado")
 	@ApiResponses(value = {
-	    @ApiResponse(responseCode = "201", description = "Sesion iniciada correctamente"),
-	    @ApiResponse(responseCode = "400", description = "Error en el inicio de sesion")
+            @ApiResponse(responseCode = "201", description = "Sesion iniciada correctamente"),
+            @ApiResponse(responseCode = "400", description = "Campos vacios"),
+            @ApiResponse(responseCode = "401", description = "Credenciales invalidas"),
+            @ApiResponse(responseCode = "404", description = "Empleado no encontrado"),
+            @ApiResponse(responseCode = "409", description = "Error de token"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+
 	})
 	@PostMapping("/login")
-	public ResponseEntity<EmpleadoDTO> login(@RequestParam("Correo") String correo, @RequestParam("Contraseña") String contrasena) {
+	public ResponseEntity<?> login(@RequestParam("Correo") String correo, @RequestParam("Contraseña") String contrasena) {
 		try {
 			EmpleadoDTO actual = empleadoService.login(correo, contrasena);
 			return new ResponseEntity<>(actual, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-		}
+		} catch (EmpleadoExcepciones.EmpleadoNoEncontradoException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		} catch (EmpleadoExcepciones.CredencialesInvalidasException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (EmpleadoExcepciones.ErrorTokenException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 	}
 	
 	@Operation(summary = "Cerrar sesion de un empleado")
 	@ApiResponses(value = {
-	    @ApiResponse(responseCode = "201", description = "Sesion cerrada correctamente"),
-	    @ApiResponse(responseCode = "400", description = "Error en el cierre de sesion")
+            @ApiResponse(responseCode = "201", description = "Sesion cerrada correctamente"),
+            @ApiResponse(responseCode = "400", description = "Error en el cierre de sesion"),
+            @ApiResponse(responseCode = "409", description = "Error de token"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
 	})
 	@PostMapping("/logout")
-	public ResponseEntity<Void> logout(@RequestParam("Correo") String correo) {
-		if (correo.isBlank()) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<?> logout(@RequestParam("Correo") String correo) {
 		try {
 			empleadoService.logout(correo);
 			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+		} catch (EmpleadoExcepciones.ErrorTokenException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+		} catch (EmpleadoExcepciones.EmpleadoNoEncontradoException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 	}
 }
