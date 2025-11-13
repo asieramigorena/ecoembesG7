@@ -12,12 +12,11 @@ import com.ecoembes.entity.Empleado;
 @Service
 public class ContenedorService {
 	private ArrayList<Contenedor> contenedores = new ArrayList<>();
-	private ArrayList<Empleado> empleados = new ArrayList<>(EmpleadoService.getEmpleados());
 
 	public ContenedorService() {
 		contenedores.add(new Contenedor("Calle Falsa 123", 28080, 1000));
 		contenedores.add(new Contenedor("Avenida Siempre Viva 742", 28080, 1500));
-		contenedores.add(new Contenedor("Plaza Mayor 1", 28080, 2000));
+		contenedores.add(new Contenedor("Plaza Mayor 1", 12001, 2000));
 	}
 	
 	public void actualizarContenedores(){
@@ -25,7 +24,7 @@ public class ContenedorService {
 		
 		for (Contenedor cont : contenedores) {
 			Random random = new Random();
-			int llenado = random.nextInt(2 - 0 + 1);
+			int llenado = random.nextInt(2 + 1);
 			int numEnvases = (llenado + 1) * 300;
 			cont.setNumEnvases(numEnvases);
 			 switch (llenado) {
@@ -40,7 +39,7 @@ public class ContenedorService {
 			        break;
 			}
 			 setContenedores(contenedores);
-		}	
+		}
 	}
 	
 	public void crearContenedor( String ubicacion, int codPostal, double capMaxima) {
@@ -48,22 +47,15 @@ public class ContenedorService {
 	}
 	
 	public ArrayList<Contenedor> getContenedores(){
-		ArrayList<Contenedor> cont = new ArrayList<>();
-		for (Contenedor c : contenedores) {
-			cont.add(c);
-		}
-		return cont;
+		return this.contenedores;
 	}
 	
 	public void setContenedores(ArrayList<Contenedor> cont){
-		contenedores.clear();
-		for (Contenedor c : cont) {
-			contenedores.add(c);
-		}
+        contenedores.addAll(cont);
 	}
 	
 	public ArrayList<ContenedorDTO> getContsPorZona (int codPostal) {
-		ArrayList<ContenedorDTO> listaConts = new ArrayList<ContenedorDTO>();
+		ArrayList<ContenedorDTO> listaConts = new ArrayList<>();
 		for(Contenedor cont : contenedores) {
 			if(cont.getCodPostal() == codPostal) {
 				listaConts.add(contenedorToDTO(cont));
@@ -79,8 +71,8 @@ public class ContenedorService {
 				contadorRojo++;
 			}
 		}
-		if (contadorRojo / contenedores.size() > 0.8) {
-			for(Empleado emp : empleados) {
+		if ((double) contadorRojo / contenedores.size() > 0.8) {
+			for(Empleado emp : EmpleadoService.getEmpleados()) {
 				System.out.println("Alerta enviada a: " + emp.getCorreo());
 			}
 		}

@@ -43,7 +43,7 @@ public class EmpeladoController {
 	})
 	@PostMapping("/logout")
 	public ResponseEntity<Void> logout(@RequestParam("Correo") String correo) {
-		if (correo.isBlank() || correo == null) {
+		if (correo.isBlank()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		try {

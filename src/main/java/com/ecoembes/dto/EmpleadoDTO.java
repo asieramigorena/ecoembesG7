@@ -6,16 +6,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public class EmpleadoDTO {
 	private String correo;
 	private String contrasena;
-	
-	public EmpleadoDTO() {}
-	
+
 	public EmpleadoDTO(String correo) {
 		this.correo = correo;
-	}
-	
-	public EmpleadoDTO(String correo, String contrasena) {
-		this.correo = correo;
-		this.contrasena = contrasena;
 	}
 	
 	public String getCorreo() {
