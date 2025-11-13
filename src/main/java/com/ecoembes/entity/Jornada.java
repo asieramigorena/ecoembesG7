@@ -104,7 +104,4 @@ public class Jornada {
 				&& Objects.equals(plantaAsignada, other.plantaAsignada)
 				&& Double.doubleToLongBits(totalCapacidad) == Double.doubleToLongBits(other.totalCapacidad);
 	}
-	
-	
-
 }

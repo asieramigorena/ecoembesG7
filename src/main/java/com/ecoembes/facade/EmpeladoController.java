@@ -20,7 +20,7 @@ import com.ecoembes.service.ContenedorService;
 import com.ecoembes.service.EmpleadoService;
 
 @RestController
-@RequestMapping("/empleados")
+@RequestMapping("/ecoembes")
 public class EmpeladoController {
 	private final EmpleadoService empleadoService;
 	public EmpeladoController(EmpleadoService empleadoService) {

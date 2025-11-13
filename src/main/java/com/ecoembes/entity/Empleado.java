@@ -1,6 +1,6 @@
 package com.ecoembes.entity;
 
-import java.time.LocalTime; 
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Empleado {
@@ -9,7 +9,7 @@ public class Empleado {
 	protected String nombre;
 	protected String correo;
 	protected String contrasena;
-	private LocalTime token;
+	private LocalDate token;
 
 	public Empleado(String nombre, String correo, String contrasena) {
 		super();
@@ -48,12 +48,12 @@ public class Empleado {
 		this.contrasena = contrasena;
 	}
 	
-	public LocalTime getToken() {
+	public LocalDate getToken() {
 		return token;
 	}
 	
 	public void setToken() {
-		this.token = LocalTime.now();
+		this.token = LocalDate.now();
 	}
 
 	public void setTokenNull() {
