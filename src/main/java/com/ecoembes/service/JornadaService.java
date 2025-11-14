@@ -154,15 +154,46 @@ public class JornadaService {
 	}
 
 	
-	public Jornada asignarContenedores(Jornada jornada, String ubi, int codPostal, double capacidadMax, double nivelLlenadoContenedor) throws IOException{
-			if (jornada.getTotalCapacidad() < nivelLlenadoContenedor) {
-				throw new IOException("No se puede asignar el contenedor. Capacidad total de la planta superada.");
-			} else {
-				jornada.setTotalCapacidad(jornada.getTotalCapacidad() - nivelLlenadoContenedor);
-				jornada.getContenedores().add(new Contenedor(ubi, codPostal, capacidadMax, nivelLlenadoContenedor));
+	public JornadaDTO asignarContenedores(Jornada jornada, int idContenedor) throws IOException{
+			for (Contenedor cont : ContenedorService.getContenedores()) {
+				if (cont.getIdContenedor() == idContenedor) {
+					
+					if (jornada.getTotalCapacidad() < cont.getNivelActualToneladas()) {
+						throw new IOException("No se puede asignar el contenedor. Capacidad total de la planta superada.");
+					} else {
+						jornada.setTotalCapacidad(jornada.getTotalCapacidad() - cont.getNivelActualToneladas());
+						jornada.getContenedores().add(cont);
+					}
+					
+				}
+				
 			}
-		return jornada;
+		
+		return jornadaToDTO(jornada);
 		
 	}
+	
+	public Jornada getJornadaById(int id) {
+		
+		for (Jornada jornada : jornadas) {
+			if (jornada.getIdJornada() == id) {
+				return jornada;
+			}
+		}	
+		return null;
+		
+	}
+	
+	  public static JornadaDTO jornadaToDTO(Jornada jornada) {
+	        JornadaDTO dto = new JornadaDTO();
+	        dto.setAsignadorPlanta(jornada.getAsignadorPlanta());
+	        dto.setPlantaAsignada(jornada.getPlantaAsignada());
+	        dto.setContenedores(jornada.getContenedores());
+	        dto.setNumContenedores(jornada.getNumContenedores());
+	        dto.setTotalCapacidad(jornada.getTotalCapacidad());
+	        dto.setFechaJornada(jornada.getFechaJornada());
+
+	        return dto;
+	    }
 	
 }

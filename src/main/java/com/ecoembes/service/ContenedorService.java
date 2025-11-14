@@ -14,7 +14,7 @@ import com.ecoembes.entity.nivelLenado;
 
 @Service
 public class ContenedorService {
-	private ArrayList<Contenedor> contenedores = new ArrayList<>();
+	private static ArrayList<Contenedor> contenedores = new ArrayList<>();
 
 	public ContenedorService() {
 		contenedores.add(new Contenedor("Calle Falsa 123", 28080, 1000));
@@ -23,13 +23,13 @@ public class ContenedorService {
 	}
 	
 	public void actualizarContenedores(){
-		contenedores = getContenedores();
 		
 		for (Contenedor cont : contenedores) {
 			Random random = new Random();
 			int llenado = random.nextInt(2 + 1);
 			int numEnvases = (llenado + 1) * 300;
 			cont.setNumEnvases(numEnvases);
+			cont.setNivelActualToneladas(random.nextDouble(0, cont.getCapMaxima()));
 			 switch (llenado) {
 			    case 0:
 			        cont.setNivelActual(nivelLenado.VERDE);
@@ -41,7 +41,6 @@ public class ContenedorService {
 			    	cont.setNivelActual(nivelLenado.ROJO);
 			        break;
 			}
-			 setContenedores(contenedores);
 		}
 	}
 	
@@ -49,8 +48,8 @@ public class ContenedorService {
 		contenedores.add(new Contenedor(ubicacion, codPostal, capMaxima));
 	}
 	
-	public ArrayList<Contenedor> getContenedores(){
-		return this.contenedores;
+	public static ArrayList<Contenedor> getContenedores(){
+		return contenedores;
 	}
 	
 	public void setContenedores(ArrayList<Contenedor> cont){

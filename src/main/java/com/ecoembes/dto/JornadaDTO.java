@@ -1,5 +1,6 @@
 package com.ecoembes.dto;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class JornadaDTO {
 	private List<Contenedor> contenedores;
 	private int numContenedores;
 	private double totalCapacidad; // Total de la capacidad que va a tener una planta en una jornada (en toneladas).
-	private Date fechaJornada;
+	private LocalDate fechaJornada;
 
 	public Empleado getAsignadorPlanta() {
 		return asignadorPlanta;
@@ -59,12 +60,14 @@ public class JornadaDTO {
 		this.totalCapacidad = totalCapacidad;
 	}
 
-	public Date getFechaJornada() {
+	public LocalDate getFechaJornada() {
 		return fechaJornada;
 	}
 
-	public void setFechaJornada(Date fechaJornada) {
+	public void setFechaJornada(LocalDate fechaJornada) {
 		this.fechaJornada = fechaJornada;
 	}
+	
+	
 
 }

@@ -1,7 +1,6 @@
 package com.ecoembes.entity;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -65,6 +64,15 @@ public class Jornada {
 	public List<Contenedor> getContenedores() {
 		return contenedores;
 	}
+	
+	public int getNumContenedores() {
+		return numContenedores;
+	}
+
+	public void setContenedores(List<Contenedor> contenedores) {
+		this.contenedores = contenedores;
+	}
+
 
 	public void setNumContenedores(int numContenedores) {
 		this.numContenedores = numContenedores;
@@ -84,8 +92,11 @@ public class Jornada {
 
 	public void setFechaJornada(LocalDate fechaJornada) {
 		this.fechaJornada = fechaJornada;
+		
+		
 	}
 	
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(asignadorPlanta, contenedores, fechaJornada, idJornada, numContenedores, personal, plantaAsignada,

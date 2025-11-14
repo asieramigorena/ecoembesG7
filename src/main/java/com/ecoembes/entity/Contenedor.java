@@ -20,16 +20,7 @@ public class Contenedor {
 		this.ubicacion = ubicacion;
 		this.codPostal = codPostal;
 		this.capMaxima = capMaxima;
-		this.nivelActual = nivelLenado.VERDE; //Valor por defecto
-	}
-	
-	public Contenedor(String ubicacion, int codPostal, double capMaxima, double nivelActualToneladas) {
-		super();
-		this.idContenedor = contadorId++;
-		this.ubicacion = ubicacion;
-		this.codPostal = codPostal;
-		this.capMaxima = capMaxima;
-		this.nivelActualToneladas = nivelActualToneladas;
+		this.nivelActual = nivelLenado.VERDE; 
 	}
 
 	public int getIdContenedor() {
@@ -78,6 +69,14 @@ public class Contenedor {
 
 	public void setNumEnvases(int numEnvases) {
 		this.numEnvases = numEnvases;
+	}
+
+	public double getNivelActualToneladas() {
+		return nivelActualToneladas;
+	}
+
+	public void setNivelActualToneladas(double nivelActualToneladas) {
+		this.nivelActualToneladas = nivelActualToneladas;
 	}
 
 	@Override
