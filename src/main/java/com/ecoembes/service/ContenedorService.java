@@ -64,6 +64,16 @@ public class ContenedorService {
 		return listaConts;
 	}
 	
+	public ArrayList<ContenedorDTO> getContsPorFecha(){
+		ArrayList<ContenedorDTO> listaConts = new ArrayList<>();
+		
+		
+		
+		
+		
+		return listaConts;
+	}
+	
 	public void alertaSaturacion() {
 		int contadorRojo = 0;
 		for(Contenedor cont : contenedores) {
