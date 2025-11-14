@@ -1,7 +1,9 @@
 package com.ecoembes.facade;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -69,4 +71,24 @@ public class ContenedorController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+	
+	
+	@Operation(summary = "Buscar contenedores por fecha")
+	@ApiResponses(value = {
+	    @ApiResponse(responseCode = "200", description = "Contenedores obtenidos correctamente"),
+	    @ApiResponse(responseCode = "400", description = "Error en la obtención de los contenedores")
+	})
+	@GetMapping("/fecha")
+	public ResponseEntity<ArrayList<ContenedorDTO>> getContsPorFecha(
+	        @RequestParam("idContenedor") int idContenedor,
+	        @RequestParam("Fecha inicial (YYYY-MM-DD)") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+	        @RequestParam("Fecha final (YYYY-MM-DD)") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin) {
+
+	    try {
+	        ArrayList<ContenedorDTO> lista = contenedorService.getContsPorFecha(idContenedor, fechaInicio, fechaFin);
+	        return new ResponseEntity<>(lista, HttpStatus.OK);
+	    } catch (Exception e) {
+	        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+	    }
+	}
 }
