@@ -1,14 +1,9 @@
 package com.ecoembes.entity;
 
 import java.util.Objects;
+import com.ecoembes.entity.nivelLenado;
 
 public class Contenedor {
-	
-	public enum nivelLenado {
-		VERDE, //Hay espacio disponible
-		NARANJA, //Espacio limitado
-		ROJO //Lleno
-	}
 	
 	private static int contadorId = 0;
 	protected int idContenedor;
@@ -17,6 +12,7 @@ public class Contenedor {
 	protected double capMaxima;
 	protected nivelLenado nivelActual;
 	protected int numEnvases;
+	protected double nivelActualToneladas;
 	
 	public Contenedor(String ubicacion, int codPostal, double capMaxima) {
 		super();
@@ -25,6 +21,15 @@ public class Contenedor {
 		this.codPostal = codPostal;
 		this.capMaxima = capMaxima;
 		this.nivelActual = nivelLenado.VERDE; //Valor por defecto
+	}
+	
+	public Contenedor(String ubicacion, int codPostal, double capMaxima, double nivelActualToneladas) {
+		super();
+		this.idContenedor = contadorId++;
+		this.ubicacion = ubicacion;
+		this.codPostal = codPostal;
+		this.capMaxima = capMaxima;
+		this.nivelActualToneladas = nivelActualToneladas;
 	}
 
 	public int getIdContenedor() {

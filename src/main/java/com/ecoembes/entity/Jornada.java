@@ -1,5 +1,6 @@
 package com.ecoembes.entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -7,25 +8,28 @@ import java.util.Objects;
 public class Jornada {
 	private static int contadorId = 0;
 	protected int idJornada;
-	protected Empleado personal;
+	protected Empleado asignadorPlanta;// Empleado que asigna los contenedores a la planta en cada jornada.
+	protected List<Empleado> personal;	// Empleados asignados a la jornada.
 	protected PlantaReciclaje plantaAsignada;
 	protected List<Contenedor> contenedores;
 	protected int numContenedores;
-	protected double totalCapacidad;
-	protected Date fechaJornada;
+	protected double totalCapacidad; // Total de la capacidad que va a tener una planta en una jornada.
+	protected LocalDate fechaJornada;
 	
-	public Jornada(Empleado personal, PlantaReciclaje plantaAsignada,
-			List<Contenedor> contenedores, int numContenedores, double totalCapacidad, Date fechaJornada) {
+	public Jornada(Empleado asignadorPlanta, List<Empleado> personal, PlantaReciclaje plantaAsignada,
+			List<Contenedor> contenedores, double totalCapacidad, LocalDate fechaJornada) {
 		super();
 		this.idJornada = contadorId++;
+		this.asignadorPlanta = asignadorPlanta;
 		this.personal = personal;
 		this.plantaAsignada = plantaAsignada;
 		this.contenedores = contenedores;
-		this.numContenedores = numContenedores;
+		this.numContenedores = contenedores.size();
 		this.totalCapacidad = totalCapacidad;
 		this.fechaJornada = fechaJornada;
 	}
 
+	
 	public int getIdJornada() {
 		return idJornada;
 	}
@@ -34,11 +38,19 @@ public class Jornada {
 		this.idJornada = idJornada;
 	}
 
-	public Empleado getPersonal() {
+	public Empleado getAsignadorPlanta() {
+		return asignadorPlanta;
+	}
+
+	public void setAsignadorPlanta(Empleado asignadorPlanta) {
+		this.asignadorPlanta = asignadorPlanta;
+	}
+
+	public List<Empleado> getPersonal() {
 		return personal;
 	}
 
-	public void setPersonal(Empleado personal) {
+	public void setPersonal(List<Empleado> personal) {
 		this.personal = personal;
 	}
 
@@ -54,14 +66,6 @@ public class Jornada {
 		return contenedores;
 	}
 
-	public void setContenedores(List<Contenedor> contenedores) {
-		this.contenedores = contenedores;
-	}
-
-	public int getNumContenedores() {
-		return numContenedores;
-	}
-
 	public void setNumContenedores(int numContenedores) {
 		this.numContenedores = numContenedores;
 	}
@@ -74,18 +78,17 @@ public class Jornada {
 		this.totalCapacidad = totalCapacidad;
 	}
 
-	public Date getFechaJornada() {
+	public LocalDate getFechaJornada() {
 		return fechaJornada;
 	}
 
-	public void setFechaJornada(Date fechaJornada) {
+	public void setFechaJornada(LocalDate fechaJornada) {
 		this.fechaJornada = fechaJornada;
 	}
 	
-
 	@Override
 	public int hashCode() {
-		return Objects.hash(contenedores, fechaJornada, idJornada, numContenedores, personal, plantaAsignada,
+		return Objects.hash(asignadorPlanta, contenedores, fechaJornada, idJornada, numContenedores, personal, plantaAsignada,
 				totalCapacidad);
 	}
 
@@ -98,10 +101,18 @@ public class Jornada {
 		if (getClass() != obj.getClass())
 			return false;
 		Jornada other = (Jornada) obj;
-		return Objects.equals(contenedores, other.contenedores)
+		return Objects.equals(asignadorPlanta, other.asignadorPlanta)
+				&& Objects.equals(contenedores, other.contenedores)
 				&& Objects.equals(fechaJornada, other.fechaJornada) && idJornada == other.idJornada
 				&& numContenedores == other.numContenedores && Objects.equals(personal, other.personal)
 				&& Objects.equals(plantaAsignada, other.plantaAsignada)
 				&& Double.doubleToLongBits(totalCapacidad) == Double.doubleToLongBits(other.totalCapacidad);
+	}
+
+	@Override
+	public String toString() {
+		return "Jornada [idJornada=" + idJornada + ", asignadorPlanta=" + asignadorPlanta + ", personal=" + personal + ", plantaAsignada=" + plantaAsignada
+				+ ", contenedores=" + contenedores + ", numContenedores=" + numContenedores
+				+ ", totalCapacidad=" + totalCapacidad + ", fechaJornada=" + fechaJornada + "]";
 	}
 }

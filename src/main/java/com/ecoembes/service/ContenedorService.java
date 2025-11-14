@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.ecoembes.dto.ContenedorDTO;
 import com.ecoembes.entity.Contenedor;
 import com.ecoembes.entity.Empleado;
+import com.ecoembes.entity.nivelLenado;
 
 @Service
 public class ContenedorService {
@@ -29,13 +30,13 @@ public class ContenedorService {
 			cont.setNumEnvases(numEnvases);
 			 switch (llenado) {
 			    case 0:
-			        cont.setNivelActual(Contenedor.nivelLenado.VERDE);
+			        cont.setNivelActual(nivelLenado.VERDE);
 			        break;
 			    case 1:
-			    	cont.setNivelActual(Contenedor.nivelLenado.NARANJA);
+			    	cont.setNivelActual(nivelLenado.NARANJA);
 			        break;
 			    case 2:
-			    	cont.setNivelActual(Contenedor.nivelLenado.ROJO);
+			    	cont.setNivelActual(nivelLenado.ROJO);
 			        break;
 			}
 			 setContenedores(contenedores);
@@ -77,7 +78,7 @@ public class ContenedorService {
 	public void alertaSaturacion() {
 		int contadorRojo = 0;
 		for(Contenedor cont : contenedores) {
-			if(cont.getNivelActual() == Contenedor.nivelLenado.ROJO) {
+			if(cont.getNivelActual() == nivelLenado.ROJO) {
 				contadorRojo++;
 			}
 		}
