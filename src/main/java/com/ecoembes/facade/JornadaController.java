@@ -1,25 +1,21 @@
 package com.ecoembes.facade;
 
-import com.ecoembes.excepciones.EmpleadoExcepciones;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
-import com.ecoembes.dto.EmpleadoDTO;
 import com.ecoembes.dto.JornadaDTO;
 import com.ecoembes.dto.capacidadPlantasDTO;
 import com.ecoembes.service.EmpleadoService;
 import com.ecoembes.service.JornadaService;
-import com.ecoembes.entity.Empleado;
 import com.ecoembes.entity.Jornada;
 
 import java.io.IOException;
@@ -41,7 +37,7 @@ public class JornadaController {
             @ApiResponse(responseCode = "400", description = "Formato de fecha inválido"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    @GetMapping("/capacidades")
+    @GetMapping("/fecha")
     public ResponseEntity<?> capacidadesPorFecha(@RequestParam("fecha") String fecha) {
         try {
             LocalDate localDate = LocalDate.parse(fecha);
@@ -61,7 +57,7 @@ public class JornadaController {
             @ApiResponse(responseCode = "404", description = "Jornada o contenedor no encontrado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    @PostMapping("/{idJornada}/asignar_contenedor")
+    @PutMapping("/idJornada/idContenedor")
     public ResponseEntity<?> asignarContenedor(
             @PathVariable("idJornada") int idJornada,
             @RequestParam("idContenedor") int idContenedor) {

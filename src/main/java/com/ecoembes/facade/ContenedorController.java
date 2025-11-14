@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,7 +34,7 @@ public class ContenedorController {
 	    @ApiResponse(responseCode = "201", description = "Contenedor creado correctamente"),
 	    @ApiResponse(responseCode = "400", description = "Error en la creacion del contenedor")
 	})
-	@PostMapping("/crear")
+	@PostMapping("/ubicacion/codPostal/CapacidadMax")
 	public ResponseEntity<ContenedorDTO> crearContenedor(
 			@RequestParam ("Ubicacion") String ubicacion,
 	        @RequestParam ("Codigo Postal") int codPostal,
@@ -50,7 +51,7 @@ public class ContenedorController {
 	    @ApiResponse(responseCode = "201", description = "Contenedores actualizados correctamente"),
 	    @ApiResponse(responseCode = "400", description = "Error en la actualizacion de los contenedores")
 	})
-    @PostMapping("/actualizar")
+	@PutMapping("")
     public ResponseEntity<Void> actualizarContenedores() {
         contenedorService.actualizarContenedores();
         return ResponseEntity.ok().build();
@@ -62,7 +63,7 @@ public class ContenedorController {
 	    @ApiResponse(responseCode = "201", description = "Contenedores obtenidos correctamente"),
 	    @ApiResponse(responseCode = "400", description = "Error en la obtencion de los contenedores")
 	})
-	@GetMapping("/zona")
+	@GetMapping("/codPostal")
     public ResponseEntity<ArrayList<ContenedorDTO>> getContsPorZona(@RequestParam("codPostal") int codPostal) {
         try {
             ArrayList<ContenedorDTO> lista = contenedorService.getContsPorZona(codPostal);
@@ -78,7 +79,7 @@ public class ContenedorController {
 	    @ApiResponse(responseCode = "200", description = "Contenedores obtenidos correctamente"),
 	    @ApiResponse(responseCode = "400", description = "Error en la obtención de los contenedores")
 	})
-	@GetMapping("/fecha")
+	@GetMapping("/idContenedor/fechaInicial/fechaFinal")
 	public ResponseEntity<ArrayList<ContenedorDTO>> getContsPorFecha(
 	        @RequestParam("idContenedor") int idContenedor,
 	        @RequestParam("Fecha inicial (YYYY-MM-DD)") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
