@@ -1,0 +1,4 @@
+rootProject.name = 'EcoembesG7'
+include 'ecoembesG7'
+include 'PlasSB'
+include 'ContSocket'
