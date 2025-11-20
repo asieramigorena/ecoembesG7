@@ -31,7 +31,7 @@ public class EmpeladoController {
             @ApiResponse(responseCode = "409", description = "Error de token"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
 	})
-	@PostMapping("/correo/contraseña")
+	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestParam("Correo") String correo, @RequestParam("Contraseña") String contrasena) {
 		try {
 			EmpleadoDTO actual = empleadoService.login(correo, contrasena);
@@ -54,7 +54,7 @@ public class EmpeladoController {
             @ApiResponse(responseCode = "409", description = "Error de token"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
 	})
-	@PostMapping("/correo")
+	@PostMapping("/logout")
 	public ResponseEntity<?> logout(@RequestParam("Correo") String correo) {
 		try {
 			empleadoService.logout(correo);

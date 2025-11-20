@@ -38,7 +38,7 @@ public class ContenedorController {
             @ApiResponse(responseCode = "401", description = "No autorizado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
 	})
-	@PostMapping("/ubicacion/codPostal/CapacidadMax")
+	@PostMapping("/{ubicacion}/{codPostal}/{CapacidadMax}")
 	public ResponseEntity<?> crearContenedor(
 			@RequestParam ("Ubicacion") String ubicacion,
 	        @RequestParam ("Codigo Postal") int codPostal,
@@ -80,7 +80,7 @@ public class ContenedorController {
             @ApiResponse(responseCode = "401", description = "No autorizado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
 	})
-	@GetMapping("/codPostal")
+	@GetMapping("/{codPostal}")
     public ResponseEntity<?> getContsPorZona(@RequestParam("codPostal") int codPostal) {
         try {
             EmpleadoService.isLogin();
@@ -101,7 +101,7 @@ public class ContenedorController {
             @ApiResponse(responseCode = "401", description = "No autorizado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
 	})
-	@GetMapping("/idContenedor/fechaInicial/fechaFinal")
+	@GetMapping("/{idContenedor}/{fechaInicial}/{fechaFinal}")
 	public ResponseEntity<?> getContsPorFecha(
 	        @RequestParam("idContenedor") int idContenedor,
 	        @RequestParam("Fecha inicial (YYYY-MM-DD)") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
