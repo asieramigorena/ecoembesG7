@@ -30,3 +30,9 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+def serverPort = 9000
+
+bootRun {
+    args = [serverPort.toString()]
+}
