@@ -8,6 +8,6 @@ import com.ecoembes.entity.Jornada;
 import java.util.Optional;
 
 public interface JornadaRepository extends JpaRepository<Jornada, Long> {
-	Optional<Jornada> findByTipo(String tipo);
+	Optional<Jornada> findById(int id);
 
 }

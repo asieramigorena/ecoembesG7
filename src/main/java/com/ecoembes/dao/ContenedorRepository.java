@@ -8,6 +8,6 @@ import com.ecoembes.entity.Contenedor;
 
 @Repository
 public interface ContenedorRepository extends JpaRepository<Contenedor, Long> {
-	Optional<Contenedor> findByCodigo(String codigo);
+	Optional<Contenedor> findByCodigo(int codigo);
 
 }
