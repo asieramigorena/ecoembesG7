@@ -42,6 +42,7 @@ public class ContenedorService {
 			        break;
 			}
 		}
+        alertaSaturacion();
 	}
 	
 	public void crearContenedor( String ubicacion, int codPostal, double capMaxima) {

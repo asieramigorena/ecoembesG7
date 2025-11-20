@@ -1,6 +1,6 @@
 package com.ecoembes.facade;
 
-import com.ecoembes.excepciones.EmpleadoExcepciones;
+import com.ecoembes.excepciones.Excepciones;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,18 +30,17 @@ public class EmpeladoController {
             @ApiResponse(responseCode = "404", description = "Empleado no encontrado"),
             @ApiResponse(responseCode = "409", description = "Error de token"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
-
 	})
 	@PostMapping("/correo/contraseña")
 	public ResponseEntity<?> login(@RequestParam("Correo") String correo, @RequestParam("Contraseña") String contrasena) {
 		try {
 			EmpleadoDTO actual = empleadoService.login(correo, contrasena);
 			return new ResponseEntity<>(actual, HttpStatus.OK);
-		} catch (EmpleadoExcepciones.EmpleadoNoEncontradoException e) {
+		} catch (Excepciones.EmpleadoNoEncontradoException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-		} catch (EmpleadoExcepciones.CredencialesInvalidasException e){
+		} catch (Excepciones.CredencialesInvalidasException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (EmpleadoExcepciones.ErrorTokenException e) {
+        } catch (Excepciones.ErrorTokenException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -60,9 +59,9 @@ public class EmpeladoController {
 		try {
 			empleadoService.logout(correo);
 			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (EmpleadoExcepciones.ErrorTokenException e) {
+		} catch (Excepciones.ErrorTokenException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-		} catch (EmpleadoExcepciones.EmpleadoNoEncontradoException e) {
+		} catch (Excepciones.EmpleadoNoEncontradoException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
