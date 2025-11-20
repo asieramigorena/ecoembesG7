@@ -1,12 +1,11 @@
 package com.ecoembes.service;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.IOException;
+import java.util.List;
 
-import com.ecoembes.excepciones.EmpleadoExcepciones;
 import org.springframework.stereotype.Service;
 
 import com.ecoembes.dto.JornadaDTO;
@@ -15,10 +14,6 @@ import com.ecoembes.entity.Contenedor;
 import com.ecoembes.entity.Empleado;
 import com.ecoembes.entity.Jornada;
 import com.ecoembes.entity.PlantaReciclaje;
-import com.ecoembes.entity.nivelLenado;
-
-import static com.ecoembes.entity.nivelLenado.*;
-import static java.time.LocalDate.*;
 
 @Service
 public class JornadaService {
@@ -60,7 +55,7 @@ public class JornadaService {
         // Jornada 2: Vidrio (Javier)
         jornadas.add(new Jornada(
             javier,
-            Arrays.asList(elena),
+                List.of(elena),
             planta2,
             Arrays.asList(
                 new Contenedor("Calle Vidrio Transparente", 41005, 3000.0),
@@ -114,7 +109,7 @@ public class JornadaService {
         // Jornada 6: Electrónicos (Mario)
         jornadas.add(new Jornada(
             mario,
-            Arrays.asList(laura),
+                List.of(laura),
             planta2,
             Arrays.asList(
                 new Contenedor("Avenida RAEE Pequeño", 41008, 1000.35),
@@ -127,7 +122,7 @@ public class JornadaService {
         // Jornada 7: Plásticos Livianos (Ana)
         jornadas.add(new Jornada(
             ana,
-            Arrays.asList(luis),
+                List.of(luis),
             planta1,
             Arrays.asList(
                 new Contenedor("Calle Film Plástico", 28006, 1000.0),
@@ -155,19 +150,20 @@ public class JornadaService {
 
 	
 	public JornadaDTO asignarContenedores(Jornada jornada, int idContenedor) throws IOException{
-			for (Contenedor cont : ContenedorService.getContenedores()) {
-				if (cont.getIdContenedor() == idContenedor) {
+
+        for (Contenedor cont : ContenedorService.getContenedores()) {
+            if (cont.getIdContenedor() == idContenedor) {
 					
-					if (jornada.getTotalCapacidad() < cont.getNivelActualToneladas()) {
-						throw new IOException("No se puede asignar el contenedor. Capacidad total de la planta superada.");
-					} else {
-						jornada.setTotalCapacidad(jornada.getTotalCapacidad() - cont.getNivelActualToneladas());
-						jornada.getContenedores().add(cont);
-					}
-					
-				}
+                if (jornada.getTotalCapacidad() < cont.getNivelActualToneladas()) {
+                    throw new IOException("No se puede asignar el contenedor. Capacidad total de la planta superada.");
+                } else {
+                    jornada.setTotalCapacidad(jornada.getTotalCapacidad() - cont.getNivelActualToneladas());
+                    jornada.getContenedores().add(cont);
+                }
+
+            }
 				
-			}
+        }
 		
 		return jornadaToDTO(jornada);
 		
