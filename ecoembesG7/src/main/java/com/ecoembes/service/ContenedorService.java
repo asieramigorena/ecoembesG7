@@ -3,14 +3,12 @@ package com.ecoembes.service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.SortedMap;
 
+import com.ecoembes.entity.*;
 import org.springframework.stereotype.Service;
 
 import com.ecoembes.dto.ContenedorDTO;
-import com.ecoembes.entity.Contenedor;
-import com.ecoembes.entity.Empleado;
-import com.ecoembes.entity.Jornada;
-import com.ecoembes.entity.nivelLenado;
 
 @Service
 public class ContenedorService {
@@ -20,6 +18,10 @@ public class ContenedorService {
 		contenedores.add(new Contenedor("Calle Falsa 123", 28080, 1000));
 		contenedores.add(new Contenedor("Avenida Siempre Viva 742", 28080, 1500));
 		contenedores.add(new Contenedor("Plaza Mayor 1", 12001, 2000));
+        contenedores.add(new Contenedor("Calle Gran Vía 45", 28013, 1300));
+        contenedores.add(new Contenedor("Avenida del Cid 8", 46001, 900));
+        contenedores.add(new Contenedor("Calle San Francisco 22", 48003, 1700));
+        contenedores.add(new Contenedor("Paseo de la Castellana 210", 28046, 2200));
 	}
 	
 	public void actualizarContenedores(){
@@ -69,18 +71,14 @@ public class ContenedorService {
 	
 	public ArrayList<ContenedorDTO> getContsPorFecha(int idContenedor, LocalDate fechaInicio, LocalDate fechaFin){
 		ArrayList<ContenedorDTO> listaConts = new ArrayList<>();
-		
-		for (Jornada jornada : JornadaService.getJornadas()) {
-			if ((jornada.getFechaJornada().isEqual(fechaInicio) || jornada.getFechaJornada().isAfter(fechaInicio)) &&
-					(jornada.getFechaJornada().isEqual(fechaFin) || jornada.getFechaJornada().isBefore(fechaFin))){ 
-				for (Contenedor cont : jornada.getContenedores()) {
-					if (cont.getIdContenedor() == idContenedor) {
-						
-						listaConts.add(contenedorToDTO(cont));
-					}
-				}
-			}
-		}
+        Historico_Contenedores historico= JornadaService.getHistoricoContenedores();
+
+        SortedMap<LocalDate, ArrayList<Contenedor>> rango = historico.getLista().subMap(fechaInicio, fechaFin.plusDays(1));
+        for(LocalDate fecha : rango.keySet()) {
+            for(Contenedor contenedor : rango.get(fecha)) {
+                listaConts.add(contenedorToDTO(contenedor));
+            }
+        }
 		return listaConts;
 	}
 	

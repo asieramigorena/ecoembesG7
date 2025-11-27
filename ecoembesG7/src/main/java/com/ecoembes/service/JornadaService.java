@@ -6,133 +6,70 @@ import java.util.Arrays;
 import java.io.IOException;
 import java.util.List;
 
+import com.ecoembes.entity.*;
 import org.springframework.stereotype.Service;
 
 import com.ecoembes.dto.JornadaDTO;
 import com.ecoembes.dto.capacidadPlantasDTO;
-import com.ecoembes.entity.Contenedor;
-import com.ecoembes.entity.Empleado;
+import com.ecoembes.entity.Historico_Contenedores;
 import com.ecoembes.entity.Jornada;
-import com.ecoembes.entity.PlantaReciclaje;
+
 
 @Service
 public class JornadaService {
 	private static ArrayList<Jornada> jornadas = new ArrayList<>();
+    private static Historico_Contenedores historico;
 	
 	public JornadaService() {
 
         // --- EMPLEADOS BASE ---
-        Empleado ana = new Empleado("Ana García", "ana.garcia@eco.com", "pass123");
-        Empleado javier = new Empleado("Javier Ruiz", "javier.ruiz@eco.com", "pass456");
-        Empleado mario = new Empleado("Mario Vidal", "mario.vidal@eco.com", "pass789");
-        Empleado luis = new Empleado("Luis Pérez", "luis.perez@eco.com", "lpass");
-        Empleado marta = new Empleado("Marta Soto", "marta.soto@eco.com", "mpass");
-        Empleado elena = new Empleado("Elena Ríos", "elena.rios@eco.com", "epass");
-        Empleado carlos = new Empleado("Carlos Gil", "carlos.gil@eco.com", "cpass");
-        Empleado laura = new Empleado("Laura Díaz", "laura.diaz@eco.com", "lapass");
-        
+        Empleado e1 = new Empleado("A123", "Ana Ruiz", "123");
+        Empleado e2 = new Empleado("B234", "Luis Martínez", "321");
+        Empleado e3 = new Empleado("C345", "Marta Gómez", "234");
+        Empleado e4 = new Empleado("D456", "Jon Etxeberria", "456");
+
         // --- PLANTAS BASE ---
-        PlantaReciclaje planta1 = new PlantaReciclaje("Planta Norte - Polímeros");
-        PlantaReciclaje planta2 = new PlantaReciclaje("Planta Central - Cristal");
-        
+        PlantaReciclaje p1 = new PlantaReciclaje("Planta Zabalgarbi");
+        PlantaReciclaje p2 = new PlantaReciclaje("Planta Basauri");
+
         // --- CREACIÓN DE LAS 10 JORNADAS ---
 
-     // Jornada 1: Plásticos (Ana)
-        jornadas.add(new Jornada(
-            ana,
-            Arrays.asList(luis, marta),
-            planta1,
-            Arrays.asList(
-                
-                new Contenedor("Calle Plástico PE", 28001, 2500.0), 
-                new Contenedor("Avenida Plástico PET", 28001, 2000.0),
-                new Contenedor("Avenida Plástico PVC", 28002, 1500.5)
-            ),
-            600000.50,
-            LocalDate.of(2025, 11, 13) 
-        ));
+        Jornada j1 = new Jornada(
+                e1,                                  // asignador planta
+                Arrays.asList(e2, e3),               // personal
+                p1,                                  // planta
+                5000,                                // capacidad total
+                LocalDate.of(2025, 2, 1)             // fecha
+        );
 
-        // Jornada 2: Vidrio (Javier)
-        jornadas.add(new Jornada(
-            javier,
-                List.of(elena),
-            planta2,
-            Arrays.asList(
-                new Contenedor("Calle Vidrio Transparente", 41005, 3000.0),
-                new Contenedor("Avenida Vidrio Oscuro", 41005, 1500.0)
-            ),
-            450000.00,
-            LocalDate.of(125, 10, 13) 
-        ));
+        Jornada j2 = new Jornada(
+                e1,
+                Arrays.asList(e2, e4),
+                p2,
+                3000,
+                LocalDate.of(2025, 2, 2)
+        );
 
-        // Jornada 3: Metales (Ana)
-        jornadas.add(new Jornada(
-            ana,
-            Arrays.asList(carlos, laura),
-            planta1,
-            Arrays.asList(
-                new Contenedor("Avenida Acero", 28003, 4000.0),
-                new Contenedor("Avenida Aluminio", 28003, 3000.75),
-                new Contenedor("Calle Cobre", 28004, 2200.0)
-            ),
-            920000.75,
-            LocalDate.of(2025, 11, 12) 
-        ));
+        Jornada j3 = new Jornada(
+                e1,
+                Arrays.asList(e3, e4),
+                p1,
+                5000,
+                LocalDate.of(2025, 2, 3)
+        );
 
-        // Jornada 4: Papel (Mario)
-        jornadas.add(new Jornada(
-            mario,
-            Arrays.asList(luis, elena),
-            planta2,
-            Arrays.asList(
-                new Contenedor("Calle Papel Blanco", 41006, 2500.0),
-                new Contenedor("Avenida Cartón", 41006, 2800.2),
-                new Contenedor("Calle Revistas", 41007, 500.0)
-            ),
-            580000.20,
-            LocalDate.of(2025, 11, 12) 
-        ));
+        ArrayList<Contenedor> c = ContenedorService.getContenedores();
+        historico.getLista().put(LocalDate.of(2025, 2, 1), new ArrayList<Contenedor>());
+        historico.getLista().get(LocalDate.of(2025, 2, 1)).addAll(Arrays.asList(c.get(0), c.get(1), c.get(2)));
 
-        // Jornada 5: Orgánicos (Javier)
-        jornadas.add(new Jornada(
-            javier,
-            Arrays.asList(marta, carlos),
-            planta1,
-            Arrays.asList(
-                new Contenedor("Avenida Orgánico A", 28005, 2000.9),
-                new Contenedor("Calle Orgánico B", 28005, 1100.0)
-            ),
-            310000.90,
-            LocalDate.of(2025, 11, 7) 
-        ));
+        historico.getLista().put(LocalDate.of(2025, 2, 2), new ArrayList<Contenedor>());
+        historico.getLista().get(LocalDate.of(2025, 2, 1)).addAll(Arrays.asList(c.get(3), c.get(4)));
 
-        // Jornada 6: Electrónicos (Mario)
-        jornadas.add(new Jornada(
-            mario,
-                List.of(laura),
-            planta2,
-            Arrays.asList(
-                new Contenedor("Avenida RAEE Pequeño", 41008, 1000.35),
-                new Contenedor("Calle RAEE Grande", 41008, 800.0)
-            ),
-            180000.35,
-            LocalDate.of(2025, 11, 9) 
-        ));
+        historico.getLista().put(LocalDate.of(2025, 2, 3), new ArrayList<Contenedor>());
+        historico.getLista().get(LocalDate.of(2025, 2, 1)).addAll(Arrays.asList(c.get(5), c.get(6), c.get(7)));
 
-        // Jornada 7: Plásticos Livianos (Ana)
-        jornadas.add(new Jornada(
-            ana,
-                List.of(luis),
-            planta1,
-            Arrays.asList(
-                new Contenedor("Calle Film Plástico", 28006, 1000.0),
-                new Contenedor("Calle Bolsas", 28006, 1000.1),
-                new Contenedor("Avenida Envases Ligeros", 28007, 500.0)
-            ),
-            250000.10,
-            LocalDate.of(2025, 11, 8) 
-        ));
-	}
+
+        }
 	
 	public static ArrayList<Jornada> getJornadas() {
 		return jornadas;
@@ -158,7 +95,13 @@ public class JornadaService {
                     throw new IOException("No se puede asignar el contenedor. Capacidad total de la planta superada.");
                 } else {
                     jornada.setTotalCapacidad(jornada.getTotalCapacidad() - cont.getNivelActualToneladas());
-                    jornada.getContenedores().add(cont);
+                    if(historico.getLista().containsKey(jornada.getFechaJornada())){
+                        historico.getLista().get(jornada.getFechaJornada()).add(cont);
+                    }else{
+                        historico.getLista().put(jornada.getFechaJornada(), new ArrayList<Contenedor>());
+                        historico.getLista().get(jornada.getFechaJornada()).add(cont);
+                    }
+
                 }
 
             }
@@ -179,13 +122,15 @@ public class JornadaService {
 		return null;
 		
 	}
+
+    public static Historico_Contenedores getHistoricoContenedores() {
+        return historico;
+    }
 	
 	  public static JornadaDTO jornadaToDTO(Jornada jornada) {
 	        JornadaDTO dto = new JornadaDTO();
 	        dto.setAsignadorPlanta(jornada.getAsignadorPlanta());
 	        dto.setPlantaAsignada(jornada.getPlantaAsignada());
-	        dto.setContenedores(jornada.getContenedores());
-	        dto.setNumContenedores(jornada.getNumContenedores());
 	        dto.setTotalCapacidad(jornada.getTotalCapacidad());
 	        dto.setFechaJornada(jornada.getFechaJornada());
 

@@ -15,8 +15,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public class JornadaDTO {
 	private Empleado asignadorPlanta;// Empleado que asigna los contenedores a la planta en cada jornada.
 	private PlantaReciclaje plantaAsignada;
-	private List<Contenedor> contenedores;
-	private int numContenedores;
 	private double totalCapacidad; // Total de la capacidad que va a tener una planta en una jornada (en toneladas).
 	private LocalDate fechaJornada;
 
@@ -34,22 +32,6 @@ public class JornadaDTO {
 
 	public void setPlantaAsignada(PlantaReciclaje plantaAsignada) {
 		this.plantaAsignada = plantaAsignada;
-	}
-
-	public List<Contenedor> getContenedores() {
-		return contenedores;
-	}
-
-	public void setContenedores(List<Contenedor> contenedores) {
-		this.contenedores = contenedores;
-	}
-
-	public int getNumContenedores() {
-		return numContenedores;
-	}
-	
-	public void setNumContenedores(int numContenedores) {
-		this.numContenedores = numContenedores;
 	}
 
 	public double getTotalCapacidad() {
