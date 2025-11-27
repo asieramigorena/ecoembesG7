@@ -76,7 +76,10 @@ public class ContenedorService {
         SortedMap<LocalDate, ArrayList<Contenedor>> rango = historico.getLista().subMap(fechaInicio, fechaFin.plusDays(1));
         for(LocalDate fecha : rango.keySet()) {
             for(Contenedor contenedor : rango.get(fecha)) {
-                listaConts.add(contenedorToDTO(contenedor));
+                if(contenedor.getIdContenedor() == idContenedor) {
+                    listaConts.add(contenedorToDTO(contenedor));
+
+                }
             }
         }
 		return listaConts;
