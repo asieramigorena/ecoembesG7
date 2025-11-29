@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 import com.ecoembes.entity.*;
@@ -19,8 +20,10 @@ import com.ecoembes.entity.Jornada;
 public class JornadaService {
 	private static ArrayList<Jornada> jornadas = new ArrayList<>();
     private static Historico_Contenedores historico;
-	
-	public JornadaService() {
+
+    public JornadaService() {
+        // Inicializa el objeto historico
+        historico = new Historico_Contenedores();
 
         // --- EMPLEADOS BASE ---
         Empleado e1 = new Empleado("A123", "Ana Ruiz", "123");
@@ -32,44 +35,24 @@ public class JornadaService {
         PlantaReciclaje p1 = new PlantaReciclaje("Planta Zabalgarbi");
         PlantaReciclaje p2 = new PlantaReciclaje("Planta Basauri");
 
-        // --- CREACIÓN DE LAS 10 JORNADAS ---
+        // --- CREACIÓN DE JORNADAS ---
+        Jornada j1 = new Jornada(e1, Arrays.asList(e2, e3), p1, 5000, LocalDate.of(2025, 2, 1));
+        Jornada j2 = new Jornada(e1, Arrays.asList(e2, e4), p2, 3000, LocalDate.of(2025, 2, 2));
+        Jornada j3 = new Jornada(e1, Arrays.asList(e3, e4), p1, 5000, LocalDate.of(2025, 2, 3));
 
-        Jornada j1 = new Jornada(
-                e1,                                  // asignador planta
-                Arrays.asList(e2, e3),               // personal
-                p1,                                  // planta
-                5000,                                // capacidad total
-                LocalDate.of(2025, 2, 1)             // fecha
-        );
+        // Agregar jornadas a la lista estática
+        jornadas.add(j1);
+        jornadas.add(j2);
+        jornadas.add(j3);
 
-        Jornada j2 = new Jornada(
-                e1,
-                Arrays.asList(e2, e4),
-                p2,
-                3000,
-                LocalDate.of(2025, 2, 2)
-        );
-
-        Jornada j3 = new Jornada(
-                e1,
-                Arrays.asList(e3, e4),
-                p1,
-                5000,
-                LocalDate.of(2025, 2, 3)
-        );
-
+        // --- CONTENEDORES ---
         ArrayList<Contenedor> c = ContenedorService.getContenedores();
-        historico.getLista().put(LocalDate.of(2025, 2, 1), new ArrayList<Contenedor>());
-        historico.getLista().get(LocalDate.of(2025, 2, 1)).addAll(Arrays.asList(c.get(0), c.get(1), c.get(2)));
 
-        historico.getLista().put(LocalDate.of(2025, 2, 2), new ArrayList<Contenedor>());
-        historico.getLista().get(LocalDate.of(2025, 2, 1)).addAll(Arrays.asList(c.get(3), c.get(4)));
-
-        historico.getLista().put(LocalDate.of(2025, 2, 3), new ArrayList<Contenedor>());
-        historico.getLista().get(LocalDate.of(2025, 2, 1)).addAll(Arrays.asList(c.get(5), c.get(6), c.get(7)));
-
-
-        }
+        // Inicializa historico con los contenedores
+        historico.getLista().put(LocalDate.of(2025, 2, 1), new ArrayList<>(Arrays.asList(c.get(0), c.get(1), c.get(2))));
+        historico.getLista().put(LocalDate.of(2025, 2, 2), new ArrayList<>(Arrays.asList(c.get(3), c.get(4))));
+        historico.getLista().put(LocalDate.of(2025, 2, 3), new ArrayList<>(Arrays.asList(c.get(5), c.get(6))));
+    }
 	
 	public static ArrayList<Jornada> getJornadas() {
 		return jornadas;

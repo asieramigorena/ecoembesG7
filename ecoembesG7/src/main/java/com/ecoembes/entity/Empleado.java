@@ -1,7 +1,11 @@
 package com.ecoembes.entity;
 
+import jakarta.persistence.Entity;
+import org.springframework.data.annotation.Id;
+
 import java.time.LocalDate;
 import java.util.Objects;
+
 
 public class Empleado {
 	private static int contadorId = 0;
