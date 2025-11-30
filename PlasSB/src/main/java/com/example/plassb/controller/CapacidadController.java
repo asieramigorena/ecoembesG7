@@ -1,7 +1,7 @@
 package com.example.plassb.controller;
 
-import com.example.plassb.model.Capacidad;
-import com.example.plassb.repository.CapacidadRepository;
+import com.example.plassb.model.entitys.Capacidad;
+import com.example.plassb.model.service.CapacidadService;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -11,15 +11,15 @@ import java.util.List;
 @RequestMapping("/capacidades")
 public class CapacidadController {
 
-    private final CapacidadRepository capacidadRepository;
+    private final CapacidadService capacidadRepository;
 
-    public CapacidadController(CapacidadRepository capacidadRepository) {
+    public CapacidadController(CapacidadService capacidadRepository) {
         this.capacidadRepository = capacidadRepository;
     }
 
     @GetMapping
     public List<Capacidad> getAll() {
-        return capacidadRepository.findAll();
+        return capacidadRepository.getCapacidad();
     }
 
     @GetMapping("/{fecha}")
