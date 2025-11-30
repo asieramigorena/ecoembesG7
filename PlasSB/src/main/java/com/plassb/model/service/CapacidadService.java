@@ -1,7 +1,7 @@
-package com.example.plassb.model.service;
+package com.plassb.model.service;
 
-import com.example.plassb.model.dao.ICapacidadDao;
-import com.example.plassb.model.entitys.Capacidad;
+import com.plassb.model.dao.ICapacidadDao;
+import com.plassb.model.entitys.Capacidad;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

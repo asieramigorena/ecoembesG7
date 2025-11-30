@@ -1,7 +1,7 @@
-package com.example.plassb.controller;
+package com.plassb.controller;
 
-import com.example.plassb.model.entitys.Capacidad;
-import com.example.plassb.model.service.CapacidadService;
+import com.plassb.model.entitys.Capacidad;
+import com.plassb.model.service.CapacidadService;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;

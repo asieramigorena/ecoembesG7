@@ -1,4 +1,4 @@
-package com.example.plassb.model.entitys;
+package com.plassb.model.entitys;
 
 
 import java.io.Serializable;

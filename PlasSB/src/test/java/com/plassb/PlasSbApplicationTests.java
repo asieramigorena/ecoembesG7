@@ -1,10 +1,10 @@
-package com.example.contsocket;
+package com.plassb;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ContSocketApplicationTests {
+class PlasSbApplicationTests {
 
     @Test
     void contextLoads() {

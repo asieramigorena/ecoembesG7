@@ -1,6 +1,6 @@
-package com.example.plassb.model.service;
+package com.plassb.model.service;
 
-import com.example.plassb.model.entitys.Capacidad;
+import com.plassb.model.entitys.Capacidad;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
