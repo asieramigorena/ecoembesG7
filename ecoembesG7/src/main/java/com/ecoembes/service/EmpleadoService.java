@@ -21,26 +21,26 @@ public class EmpleadoService {
 	public static ArrayList<Empleado> getEmpleados() {
 		return empleados;
 	}
-	
-	public EmpleadoDTO login(String correo, String contrasena) throws Exception {
-		if (correo.isBlank() || contrasena.isBlank()) {
-			throw new Excepciones.CredencialesInvalidasException("Credenciales invalidas");
-		}
-		for (Empleado empleado : empleados) {
-			if (empleado.getCorreo().equals(correo)) {
-				if (empleado.getToken() != null) {
-					throw new Excepciones.ErrorTokenException("El usuario " + empleado.getCorreo() + " ya tiene una sesion iniciada");
-				}
-				else if (empleado.getContrasena().equals(contrasena)) {
-					empleado.setToken();
+
+    public EmpleadoDTO login(String correo, String contrasena) throws Exception {
+        if (correo.isBlank() || contrasena.isBlank()) {
+            throw new Excepciones.CredencialesInvalidasException("Credenciales invalidas");
+        }
+        for (Empleado empleado : empleados) {
+            if (empleado.getCorreo().equals(correo)) {
+                if (empleado.getToken() != null) {
+                    throw new Excepciones.ErrorTokenException("El usuario " + empleado.getCorreo() + " ya tiene una sesion iniciada");
+                }
+                else if (empleado.getContrasena().equals(contrasena)) {
+                    empleado.setToken();
                     activo = empleado;
-					return empleadoToDTO(empleado);
-				}
-				break;
-			}
-		}
-		throw new Excepciones.CredencialesInvalidasException("Credenciales invalidas");
-	}
+                    return empleadoToDTO(empleado);
+                }
+                break;
+            }
+        }
+        throw new Excepciones.CredencialesInvalidasException("Credenciales invalidas");
+    }
 	
 	
 	public void logout(String correo) throws Exception {

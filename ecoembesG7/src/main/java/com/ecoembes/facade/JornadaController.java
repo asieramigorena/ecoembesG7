@@ -4,7 +4,6 @@ import com.ecoembes.excepciones.Excepciones;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,7 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import com.ecoembes.dto.JornadaDTO;
-import com.ecoembes.dto.capacidadPlantasDTO;
+import com.ecoembes.dto.CapacidadPlantasDTO;
 import com.ecoembes.service.EmpleadoService;
 import com.ecoembes.service.JornadaService;
 import com.ecoembes.entity.Jornada;
@@ -44,7 +43,7 @@ public class JornadaController {
         try {
             EmpleadoService.isLogin();
             LocalDate localDate = LocalDate.parse(fecha);
-            List<capacidadPlantasDTO> capacidades = jornadaService.capacidadPlantas(localDate);
+            List<CapacidadPlantasDTO> capacidades = jornadaService.capacidadPlantas(localDate);
             return new ResponseEntity<>(capacidades, HttpStatus.OK);
         } catch (java.time.format.DateTimeParseException e) {
             return new ResponseEntity<>("Formato de fecha inválido. Use YYYY-MM-DD", HttpStatus.BAD_REQUEST);

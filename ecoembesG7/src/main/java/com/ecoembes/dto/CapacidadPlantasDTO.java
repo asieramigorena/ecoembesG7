@@ -2,11 +2,11 @@ package com.ecoembes.dto;
 
 import java.util.Objects;
 
-public class capacidadPlantasDTO {
+public class CapacidadPlantasDTO {
 	private String nombrePlanta;
 	private double capacidadTotal;
 
-	public capacidadPlantasDTO(String nombrePlanta, double capacidadTotal) {
+	public CapacidadPlantasDTO(String nombrePlanta, double capacidadTotal) {
 		this.nombrePlanta = nombrePlanta;
 		this.capacidadTotal = capacidadTotal;
 	}
@@ -40,7 +40,7 @@ public class capacidadPlantasDTO {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		capacidadPlantasDTO other = (capacidadPlantasDTO) obj;
+		CapacidadPlantasDTO other = (CapacidadPlantasDTO) obj;
 		return Double.doubleToLongBits(capacidadTotal) == Double.doubleToLongBits(other.capacidadTotal)
 				&& Objects.equals(nombrePlanta, other.nombrePlanta);
 	}

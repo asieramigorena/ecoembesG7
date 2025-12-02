@@ -1,6 +1,6 @@
 package com.ecoembes.external;
 
-import com.ecoembes.dto.capacidadPlantasDTO;
+import com.ecoembes.dto.CapacidadPlantasDTO;
 import com.ecoembes.dto.CapacidadResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -15,12 +15,12 @@ public class PlasSBServiceProxy {
         this.restTemplate = new RestTemplate();
     }
 
-    public capacidadPlantasDTO getCapacidad(String fecha) {
+    public CapacidadPlantasDTO getCapacidad(String fecha) {
         String url = BASE_URL + "/" + fecha;
-        return restTemplate.getForObject(url, capacidadPlantasDTO.class);
+        return restTemplate.getForObject(url, CapacidadPlantasDTO.class);
     }
     
-    public capacidadPlantasDTO getCapacidadPlasSB(String fecha) {
+    public CapacidadPlantasDTO getCapacidadPlasSB(String fecha) {
     	
 
         // Llamada a la API 
@@ -29,7 +29,7 @@ public class PlasSBServiceProxy {
                 restTemplate.getForObject(url, CapacidadResponse.class);
 
         // Construimos el DTO final
-        capacidadPlantasDTO capacidadPlantasDTOresultado = new capacidadPlantasDTO(
+        CapacidadPlantasDTO capacidadPlantasDTOresultado = new CapacidadPlantasDTO(
 				"PlasSB",                
 				response.getCapacidad()  
 		);

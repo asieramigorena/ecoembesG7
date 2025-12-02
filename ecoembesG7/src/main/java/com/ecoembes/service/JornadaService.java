@@ -4,25 +4,29 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
 
 import com.ecoembes.entity.*;
+import com.ecoembes.dto.CapacidadPlantasDTO;
+import com.ecoembes.external.SocketEcoembes;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ecoembes.dto.JornadaDTO;
-import com.ecoembes.dto.capacidadPlantasDTO;
 import com.ecoembes.entity.Historico_Contenedores;
 import com.ecoembes.entity.Jornada;
 import com.ecoembes.external.PlasSBServiceProxy;
 
 @Service
 public class JornadaService {
-	private static ArrayList<Jornada> jornadas = new ArrayList<>();
+
+    @Autowired
+    private SocketEcoembes socketEcoembes;
+
+    private static ArrayList<Jornada> jornadas = new ArrayList<>();
     private static Historico_Contenedores historico;
 
     public JornadaService() {
-    	
+
         // Inicializa el objeto historico
         historico = new Historico_Contenedores();
 
@@ -54,37 +58,38 @@ public class JornadaService {
         historico.getLista().put(LocalDate.of(2025, 2, 2), new ArrayList<>(Arrays.asList(c.get(3), c.get(4))));
         historico.getLista().put(LocalDate.of(2025, 2, 3), new ArrayList<>(Arrays.asList(c.get(5), c.get(6))));
     }
-	
-	public static ArrayList<Jornada> getJornadas() {
-		return jornadas;
-	}
-	
-	public ArrayList<capacidadPlantasDTO> capacidadPlantas(LocalDate fecha) {
-		ArrayList<capacidadPlantasDTO> capacidades = new ArrayList<>();
+
+    public static ArrayList<Jornada> getJornadas() {
+        return jornadas;
+    }
+
+    public ArrayList<CapacidadPlantasDTO> capacidadPlantas(LocalDate fecha) {
+        ArrayList<CapacidadPlantasDTO> capacidades = new ArrayList<>();
 //		for (Jornada jornada : jornadas) {
 //			if (jornada.getFechaJornada().equals(fecha)) {
 //				capacidades.add(new capacidadPlantasDTO(jornada.getPlantaAsignada().getNombre(), jornada.getTotalCapacidad()) );
 //			}
 //		}
-		String fechaString = fecha.toString();
-		PlasSBServiceProxy plasSBServiceProxy = new PlasSBServiceProxy();
-		capacidades.add(plasSBServiceProxy.getCapacidadPlasSB(fechaString));
-		return capacidades;
-	}
+        String fechaString = fecha.toString();
+        PlasSBServiceProxy plasSBServiceProxy = new PlasSBServiceProxy();
+        capacidades.add(plasSBServiceProxy.getCapacidadPlasSB(fechaString));
+        capacidades.add(strToCapacidadPlantasDTO(socketEcoembes.enviarGet("capacidades/" + fechaString)));
+        return capacidades;
+    }
 
-	
-	public JornadaDTO asignarContenedores(Jornada jornada, int idContenedor) throws IOException{
+
+    public JornadaDTO asignarContenedores(Jornada jornada, int idContenedor) throws IOException {
 
         for (Contenedor cont : ContenedorService.getContenedores()) {
             if (cont.getIdContenedor() == idContenedor) {
-					
+
                 if (jornada.getTotalCapacidad() < cont.getNivelActualToneladas()) {
                     throw new IOException("No se puede asignar el contenedor. Capacidad total de la planta superada.");
                 } else {
                     jornada.setTotalCapacidad(jornada.getTotalCapacidad() - cont.getNivelActualToneladas());
-                    if(historico.getLista().containsKey(jornada.getFechaJornada())){
+                    if (historico.getLista().containsKey(jornada.getFechaJornada())) {
                         historico.getLista().get(jornada.getFechaJornada()).add(cont);
-                    }else{
+                    } else {
                         historico.getLista().put(jornada.getFechaJornada(), new ArrayList<Contenedor>());
                         historico.getLista().get(jornada.getFechaJornada()).add(cont);
                     }
@@ -92,36 +97,40 @@ public class JornadaService {
                 }
 
             }
-				
+
         }
-		
-		return jornadaToDTO(jornada);
-		
-	}
-	
-	public Jornada getJornadaById(int id) {
-		
-		for (Jornada jornada : jornadas) {
-			if (jornada.getIdJornada() == id) {
-				return jornada;
-			}
-		}	
-		return null;
-		
-	}
+
+        return jornadaToDTO(jornada);
+
+    }
+
+    public Jornada getJornadaById(int id) {
+
+        for (Jornada jornada : jornadas) {
+            if (jornada.getIdJornada() == id) {
+                return jornada;
+            }
+        }
+        return null;
+
+    }
 
     public static Historico_Contenedores getHistoricoContenedores() {
         return historico;
     }
-	
-	  public static JornadaDTO jornadaToDTO(Jornada jornada) {
-	        JornadaDTO dto = new JornadaDTO();
-	        dto.setAsignadorPlanta(jornada.getAsignadorPlanta());
-	        dto.setPlantaAsignada(jornada.getPlantaAsignada());
-	        dto.setTotalCapacidad(jornada.getTotalCapacidad());
-	        dto.setFechaJornada(jornada.getFechaJornada());
 
-	        return dto;
-	    }
-	
+    public static JornadaDTO jornadaToDTO(Jornada jornada) {
+        JornadaDTO dto = new JornadaDTO();
+        dto.setAsignadorPlanta(jornada.getAsignadorPlanta());
+        dto.setPlantaAsignada(jornada.getPlantaAsignada());
+        dto.setTotalCapacidad(jornada.getTotalCapacidad());
+        dto.setFechaJornada(jornada.getFechaJornada());
+
+        return dto;
+    }
+
+    public CapacidadPlantasDTO strToCapacidadPlantasDTO(String str) {
+        String[] separado = str.split(";");
+        return new CapacidadPlantasDTO("ContSocket", Double.parseDouble(separado[1]) );
+    }
 }
