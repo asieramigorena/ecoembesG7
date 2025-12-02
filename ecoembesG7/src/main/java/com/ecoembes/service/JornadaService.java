@@ -14,7 +14,7 @@ import com.ecoembes.dto.JornadaDTO;
 import com.ecoembes.dto.capacidadPlantasDTO;
 import com.ecoembes.entity.Historico_Contenedores;
 import com.ecoembes.entity.Jornada;
-
+import com.ecoembes.external.PlasSBServiceProxy;
 
 @Service
 public class JornadaService {
@@ -22,6 +22,7 @@ public class JornadaService {
     private static Historico_Contenedores historico;
 
     public JornadaService() {
+    	
         // Inicializa el objeto historico
         historico = new Historico_Contenedores();
 
@@ -60,11 +61,14 @@ public class JornadaService {
 	
 	public ArrayList<capacidadPlantasDTO> capacidadPlantas(LocalDate fecha) {
 		ArrayList<capacidadPlantasDTO> capacidades = new ArrayList<>();
-		for (Jornada jornada : jornadas) {
-			if (jornada.getFechaJornada().equals(fecha)) {
-				capacidades.add(new capacidadPlantasDTO(jornada.getPlantaAsignada().getNombre(), jornada.getTotalCapacidad()) );
-			}
-		}
+//		for (Jornada jornada : jornadas) {
+//			if (jornada.getFechaJornada().equals(fecha)) {
+//				capacidades.add(new capacidadPlantasDTO(jornada.getPlantaAsignada().getNombre(), jornada.getTotalCapacidad()) );
+//			}
+//		}
+		String fechaString = fecha.toString();
+		PlasSBServiceProxy plasSBServiceProxy = new PlasSBServiceProxy();
+		capacidades.add(plasSBServiceProxy.getCapacidadPlasSB(fechaString));
 		return capacidades;
 	}
 
