@@ -72,8 +72,16 @@ public class JornadaService {
 //		}
         String fechaString = fecha.toString();
         PlasSBServiceProxy plasSBServiceProxy = new PlasSBServiceProxy();
-        capacidades.add(plasSBServiceProxy.getCapacidadPlasSB(fechaString));
-        capacidades.add(strToCapacidadPlantasDTO(socketEcoembes.enviarGet("capacidades/" + fechaString)));
+        try {
+        	capacidades.add(plasSBServiceProxy.getCapacidadPlasSB(fechaString));
+        } catch (Exception e) {
+			
+		}
+        try {
+        	capacidades.add(strToCapacidadPlantasDTO(socketEcoembes.enviarGet("capacidades/" + fechaString)));
+        } catch (Exception e) {
+        	
+        }
         return capacidades;
     }
 

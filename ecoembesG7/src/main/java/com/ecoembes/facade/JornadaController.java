@@ -38,7 +38,7 @@ public class JornadaController {
             @ApiResponse(responseCode = "401", description = "No autorizado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    @GetMapping("/{fecha}")
+    @GetMapping("/")
     public ResponseEntity<?> capacidadesPorFecha(@RequestParam("fecha") String fecha) {
         try {
             EmpleadoService.isLogin();
@@ -62,7 +62,7 @@ public class JornadaController {
             @ApiResponse(responseCode = "404", description = "Jornada o contenedor no encontrado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    @PutMapping("/{idJornada}/{idContenedor}")
+    @PutMapping("/{idJornada}/contenedores/{idContenedor}")
     public ResponseEntity<?> asignarContenedor(
             @RequestParam("idJornada") int idJornada,
             @RequestParam("idContenedor") int idContenedor) {
