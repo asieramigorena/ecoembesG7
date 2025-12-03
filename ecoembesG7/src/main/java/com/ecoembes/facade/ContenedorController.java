@@ -1,3 +1,4 @@
+// java
 package com.ecoembes.facade;
 
 import java.time.LocalDate;
@@ -25,62 +26,61 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @RestController
 @RequestMapping("/ecoembes/contenedor")
 public class ContenedorController {
-	
-	private final ContenedorService contenedorService;
-	public ContenedorController(ContenedorService ContenedorService) {
-		this.contenedorService = ContenedorService;
-	}
-	
-	@Operation(summary = "Crear un nuevo contenedor")
-	@ApiResponses(value = {
-	    @ApiResponse(responseCode = "201", description = "Contenedor creado correctamente"),
-	    @ApiResponse(responseCode = "400", description = "Error en la creacion del contenedor"),
+
+    private final ContenedorService contenedorService;
+    public ContenedorController(ContenedorService ContenedorService) {
+        this.contenedorService = ContenedorService;
+    }
+
+    @Operation(summary = "Crear un nuevo contenedor")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Contenedor creado correctamente"),
+            @ApiResponse(responseCode = "400", description = "Error en la creacion del contenedor"),
             @ApiResponse(responseCode = "401", description = "No autorizado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
-	})
-	@PostMapping("/{ubicacion}/{codPostal}/{CapacidadMax}")
-	public ResponseEntity<?> crearContenedor(
-			@RequestParam ("Ubicacion") String ubicacion,
-	        @RequestParam ("Codigo Postal") int codPostal,
-	        @RequestParam ("Capacidad Maxima") double capMaxima) {
+    })
+    @PostMapping("")
+    public ResponseEntity<?> crearContenedor(
+            @RequestParam("ubicacion") String ubicacion,
+            @RequestParam("codPostal") int codPostal,
+            @RequestParam("capacidadMax") double capMaxima) {
         try{
             EmpleadoService.isLogin();
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-	    contenedorService.crearContenedor(ubicacion, codPostal, capMaxima);
+        contenedorService.crearContenedor(ubicacion, codPostal, capMaxima);
 
-	    ContenedorDTO respuesta = new ContenedorDTO (ubicacion, codPostal, capMaxima);
-	    return new ResponseEntity<>(respuesta, HttpStatus.CREATED);
-	}
-	
-	@Operation(summary = "Actualizar el estado de los contenedores")
-	@ApiResponses(value = {
-	    @ApiResponse(responseCode = "201", description = "Contenedores actualizados correctamente"),
-	    @ApiResponse(responseCode = "400", description = "Error en la actualizacion de los contenedores"),
+        ContenedorDTO respuesta = new ContenedorDTO(ubicacion, codPostal, capMaxima);
+        return new ResponseEntity<>(respuesta, HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "Actualizar el estado de los contenedores")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Contenedores actualizados correctamente"),
+            @ApiResponse(responseCode = "400", description = "Error en la actualizacion de los contenedores"),
             @ApiResponse(responseCode = "401", description = "No autorizado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
-	})
-	@PutMapping("")
+    })
+    @PutMapping("")
     public ResponseEntity<?> actualizarContenedores() {
         try{
             EmpleadoService.isLogin();
         } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
         contenedorService.actualizarContenedores();
         return ResponseEntity.ok().build();
     }
 
-	
-	@Operation(summary = "Buscar contenedores por zona")
-	@ApiResponses(value = {
-	    @ApiResponse(responseCode = "201", description = "Contenedores obtenidos correctamente"),
-	    @ApiResponse(responseCode = "400", description = "Error en la obtencion de los contenedores"),
+    @Operation(summary = "Buscar contenedores por zona")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Contenedores obtenidos correctamente"),
+            @ApiResponse(responseCode = "400", description = "Error en la obtencion de los contenedores"),
             @ApiResponse(responseCode = "401", description = "No autorizado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
-	})
-	@GetMapping("/{codPostal}")
+    })
+    @GetMapping("/zona")
     public ResponseEntity<?> getContsPorZona(@RequestParam("codPostal") int codPostal) {
         try {
             EmpleadoService.isLogin();
@@ -89,32 +89,31 @@ public class ContenedorController {
         } catch (Excepciones.SesionNoIniciadaException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-	
-	
-	@Operation(summary = "Buscar contenedores por fecha")
-	@ApiResponses(value = {
-	    @ApiResponse(responseCode = "201", description = "Contenedores obtenidos correctamente"),
-	    @ApiResponse(responseCode = "400", description = "Error en la obtención de los contenedores"),
+
+    @Operation(summary = "Buscar contenedores por fecha")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Contenedores obtenidos correctamente"),
+            @ApiResponse(responseCode = "400", description = "Error en la obtención de los contenedores"),
             @ApiResponse(responseCode = "401", description = "No autorizado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
-	})
-	@GetMapping("/{idContenedor}/{fechaInicial}/{fechaFinal}")
-	public ResponseEntity<?> getContsPorFecha(
-	        @RequestParam("idContenedor") int idContenedor,
-	        @RequestParam("Fecha inicial (YYYY-MM-DD)") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
-	        @RequestParam("Fecha final (YYYY-MM-DD)") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin) {
+    })
+    @GetMapping("/fecha")
+    public ResponseEntity<?> getContsPorFecha(
+            @RequestParam("idContenedor") int idContenedor,
+            @RequestParam("fechaInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+            @RequestParam("fechaFin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin) {
 
-	    try {
+        try {
             EmpleadoService.isLogin();
-	        ArrayList<ContenedorDTO> lista = contenedorService.getContsPorFecha(idContenedor, fechaInicio, fechaFin);
-	        return new ResponseEntity<>(lista, HttpStatus.OK);
+            ArrayList<ContenedorDTO> lista = contenedorService.getContsPorFecha(idContenedor, fechaInicio, fechaFin);
+            return new ResponseEntity<>(lista, HttpStatus.OK);
         } catch (Excepciones.SesionNoIniciadaException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
-	    } catch (Exception e) {
-	        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-	    }
-	}
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }
