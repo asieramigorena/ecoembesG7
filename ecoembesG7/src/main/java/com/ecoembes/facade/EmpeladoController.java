@@ -57,6 +57,7 @@ public class EmpeladoController {
 	@PostMapping("/logout")
 	public ResponseEntity<?> logout(@RequestParam("Correo") String correo) {
 		try {
+
 			empleadoService.logout(correo);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Excepciones.ErrorTokenException e) {

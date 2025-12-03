@@ -46,7 +46,7 @@ public class SocketEcoembes implements CommandLineRunner {
     }
 
     public void enviarPut(String recurso, String body) {
-        enviar("PUT " + recurso + "/" + body);
+        enviar("PUT " + recurso + body);
     }
 
     private String enviar(String mensaje) {

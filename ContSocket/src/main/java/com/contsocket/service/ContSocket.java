@@ -73,7 +73,7 @@ public class ContSocket implements CommandLineRunner {
     }
 
     private String processGetQuery(String query) {
-        if (!query.toUpperCase().startsWith("GET") || !query.toUpperCase().contains("PUT")) {
+        if (!query.toUpperCase().startsWith("GET")) {
             return "ERROR;Formato inválido";
         }
 
@@ -83,7 +83,6 @@ public class ContSocket implements CommandLineRunner {
         }
 
         String path = parts[1];
-
         if (path.startsWith("/capacidad/") || path.startsWith("capacidad/")) {
             if (parts[0].equalsIgnoreCase("PUT")) {
                 String[] datos = path.split("/");

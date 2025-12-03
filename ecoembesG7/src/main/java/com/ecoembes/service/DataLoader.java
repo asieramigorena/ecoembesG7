@@ -47,11 +47,11 @@ public class DataLoader implements CommandLineRunner {
 
         // --- Plantas de reciclaje ---
         PlantaReciclaje planta1 = new PlantaReciclaje();
-        planta1.setNombre("Planta Norte");
+        planta1.setNombre("PlasSB .Ltd");
         plantaDAO.save(planta1);
 
         PlantaReciclaje planta2 = new PlantaReciclaje();
-        planta2.setNombre("Planta Sur");
+        planta2.setNombre("ContSocket .Ltd");
         plantaDAO.save(planta2);
 
         // --- Contenedores ---
