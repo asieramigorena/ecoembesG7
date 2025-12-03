@@ -49,6 +49,8 @@ public class JornadaDTO {
 	public void setFechaJornada(LocalDate fechaJornada) {
 		this.fechaJornada = fechaJornada;
 	}
+
+
 	
 	
 

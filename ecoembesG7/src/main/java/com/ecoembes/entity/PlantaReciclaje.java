@@ -1,19 +1,31 @@
 package com.ecoembes.entity;
 
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.Objects;
 
+@Entity
+@Table(name = "plantas")
 public class PlantaReciclaje {
-	protected static int contadorId = 0;
-	protected int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected int id;
+    @Column
 	protected String nombre;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "plantaAsignada")
+    protected ArrayList<Jornada> jornadas;
 
 	public PlantaReciclaje(String nombre) {
 		super();
-		this.id = contadorId++;
 		this.nombre = nombre;
 	}
 
-	public int getId() {
+    public PlantaReciclaje() {
+
+    }
+
+    public int getId() {
 		return id;
 	}
 
@@ -28,6 +40,8 @@ public class PlantaReciclaje {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+
+
 
 	@Override
 	public int hashCode() {
