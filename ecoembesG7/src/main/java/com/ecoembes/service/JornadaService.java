@@ -37,11 +37,11 @@ public class JornadaService {
         Empleado e4 = new Empleado("D456", "Jon Etxeberria", "456");
 
         // --- PLANTAS BASE ---
-        PlantaReciclaje p1 = new PlantaReciclaje("Planta Zabalgarbi");
-        PlantaReciclaje p2 = new PlantaReciclaje("Planta Basauri");
+        PlantaReciclaje p1 = new PlantaReciclaje("PlasSB");
+        PlantaReciclaje p2 = new PlantaReciclaje("ContSocket");
 
         // --- CREACIÓN DE JORNADAS ---
-        Jornada j1 = new Jornada(e1, Arrays.asList(e2, e3), p1, 5000, LocalDate.of(2025, 2, 1));
+        Jornada j1 = new Jornada(e1, Arrays.asList(e2, e3), p1, 5000, LocalDate.of(2025, 12, 1));
         Jornada j2 = new Jornada(e1, Arrays.asList(e2, e4), p2, 3000, LocalDate.of(2025, 2, 2));
         Jornada j3 = new Jornada(e1, Arrays.asList(e3, e4), p1, 5000, LocalDate.of(2025, 2, 3));
 
@@ -87,14 +87,25 @@ public class JornadaService {
 
 
     public JornadaDTO asignarContenedores(Jornada jornada, int idContenedor) throws IOException {
-
+    	
+    	PlasSBServiceProxy plasSBServiceProxy = new PlasSBServiceProxy();
+    	Contenedor contenedor = obtenerContenedorPorId(idContenedor);
+    	
+    	
+    	CapacidadPlantasDTO capacidad;
+    	if (jornada.getPlantaAsignada().getNombre().equals("ContSocket")) {
+			capacidad = strToCapacidadPlantasDTO(socketEcoembes.enviarGet("capacidades/" + jornada.getFechaJornada().toString()));
+		} else {
+			capacidad = plasSBServiceProxy.getCapacidadPlasSB(jornada.getFechaJornada().toString());
+		}
         for (Contenedor cont : ContenedorService.getContenedores()) {
             if (cont.getIdContenedor() == idContenedor) {
 
-                if (jornada.getTotalCapacidad() < cont.getNivelActualToneladas()) {
+                if (capacidad.getCapacidadTotal() < cont.getNivelActualToneladas()) {
                     throw new IOException("No se puede asignar el contenedor. Capacidad total de la planta superada.");
                 } else {
-                    jornada.setTotalCapacidad(jornada.getTotalCapacidad() - cont.getNivelActualToneladas());
+//                    jornada.setTotalCapacidad(jornada.getTotalCapacidad() - cont.getNivelActualToneladas());
+//                	jornada.getContenedoresAsignados().add(cont);
                     if (historico.getLista().containsKey(jornada.getFechaJornada())) {
                         historico.getLista().get(jornada.getFechaJornada()).add(cont);
                     } else {
@@ -111,7 +122,16 @@ public class JornadaService {
         return jornadaToDTO(jornada);
 
     }
-
+    
+    public Contenedor obtenerContenedorPorId(int idContenedor) {
+		for (Contenedor contenedor : ContenedorService.getContenedores()) {
+			if (contenedor.getIdContenedor() == idContenedor) {
+				return contenedor;
+			}
+		}
+		return null;
+	}
+    
     public Jornada getJornadaById(int id) {
 
         for (Jornada jornada : jornadas) {
@@ -129,9 +149,11 @@ public class JornadaService {
 
     public static JornadaDTO jornadaToDTO(Jornada jornada) {
         JornadaDTO dto = new JornadaDTO();
+        PlasSBServiceProxy plasSBServiceProxy = new PlasSBServiceProxy();
         dto.setAsignadorPlanta(jornada.getAsignadorPlanta());
         dto.setPlantaAsignada(jornada.getPlantaAsignada());
-        dto.setTotalCapacidad(jornada.getTotalCapacidad());
+        CapacidadPlantasDTO capacidad = plasSBServiceProxy.getCapacidadPlasSB(jornada.getFechaJornada().toString());
+        dto.setTotalCapacidad(capacidad.getCapacidadTotal());
         dto.setFechaJornada(jornada.getFechaJornada());
 
         return dto;
