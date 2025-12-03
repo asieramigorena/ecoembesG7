@@ -1,5 +1,6 @@
 package com.contsocket.service;
 
+import com.contsocket.entity.Capacidad;
 import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +12,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.time.LocalDate;
 
 @Component
 public class ContSocket implements CommandLineRunner {
@@ -27,44 +29,51 @@ public class ContSocket implements CommandLineRunner {
     @Override
     public void run(String... args) {
         new Thread(() -> {
+            Socket socket = null;
             try {
                 serverSocket = new ServerSocket(serverPort);
                 System.out.println("Socket servidor iniciado en puerto " + serverPort);
 
                 while (running) {
-                    Socket socket = serverSocket.accept();
+                    socket = serverSocket.accept();
                     handleClient(socket);
                 }
             } catch (IOException ex) {
                 if (running) {
                     throw new RuntimeException(ex);
                 }
+            } finally {
+                try {
+                    assert socket != null;
+                    socket.close();
+                } catch (IOException e) {
+                    System.err.println(e.getMessage());
+                }
+                shutdown();
             }
         }).start();
     }
 
     private void handleClient(Socket socket) {
-        try (DataInputStream in = new DataInputStream(socket.getInputStream());
+        try (socket; DataInputStream in = new DataInputStream(socket.getInputStream());
              DataOutputStream out = new DataOutputStream(socket.getOutputStream())) {
-
-            String mensaje = in.readUTF();
-            System.out.println("Mensaje recibido: " + mensaje);
-            String respuesta = processGetQuery(mensaje);
-            out.writeUTF(respuesta);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
             try {
-                socket.close();
+
+                String mensaje = in.readUTF();
+                System.out.println("Mensaje recibido: " + mensaje);
+                String respuesta = processGetQuery(mensaje);
+                out.writeUTF(respuesta);
+
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println(e.getMessage());
             }
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
         }
     }
 
     private String processGetQuery(String query) {
-        if (!query.toUpperCase().startsWith("GET")) {
+        if (!query.toUpperCase().startsWith("GET") || !query.toUpperCase().contains("PUT")) {
             return "ERROR;Formato inválido";
         }
 
@@ -75,9 +84,17 @@ public class ContSocket implements CommandLineRunner {
 
         String path = parts[1];
 
-        if (path.startsWith("/capacidades/") || path.startsWith("capacidades/")) {
-            String fecha = path.substring(path.lastIndexOf("/") + 1);
-            return capacidadService.getCapacidadPorFecha(fecha);
+        if (path.startsWith("/capacidad/") || path.startsWith("capacidad/")) {
+            if (parts[0].equalsIgnoreCase("PUT")) {
+                String[] datos = path.split("/");
+                Capacidad c = new Capacidad(LocalDate.parse(datos[1]), Double.parseDouble(datos[2]));
+                return capacidadService.save(c).toString();
+            } else if (parts[0].equalsIgnoreCase("GET")){
+                String fecha = path.substring(path.lastIndexOf("/") + 1);
+                return capacidadService.getCapacidadPorFecha(fecha);
+            } else {
+                return "ERROR;Método no soportado";
+            }
         }
 
         return "ERROR;Recurso no encontrado";
@@ -92,7 +109,7 @@ public class ContSocket implements CommandLineRunner {
                 serverSocket.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
     }
 }

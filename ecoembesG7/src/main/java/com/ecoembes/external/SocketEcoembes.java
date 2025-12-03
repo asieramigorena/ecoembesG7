@@ -8,7 +8,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.time.LocalDate;
 
 @Component
 public class SocketEcoembes implements CommandLineRunner {
@@ -44,6 +43,10 @@ public class SocketEcoembes implements CommandLineRunner {
 
     public String enviarGet(String recurso) {
         return enviarGet(recurso, null);
+    }
+
+    public void enviarPut(String recurso, String body) {
+        enviar("PUT " + recurso + "/" + body);
     }
 
     private String enviar(String mensaje) {

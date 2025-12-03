@@ -2,7 +2,6 @@ package com.ecoembes.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.io.IOException;
 import java.util.List;
 
@@ -58,12 +57,12 @@ public class JornadaService {
         try {
         	capacidades.add(plasSBServiceProxy.getCapacidadPlasSB(fechaString));
         } catch (Exception e) {
-			
+			System.err.println(e.getMessage());
 		}
         try {
-        	capacidades.add(strToCapacidadPlantasDTO(socketEcoembes.enviarGet("capacidades/" + fechaString)));
+        	capacidades.add(strToCapacidadPlantasDTO(socketEcoembes.enviarGet("capacidad/" + fechaString)));
         } catch (Exception e) {
-        	
+            System.err.println(e.getMessage());
         }
         return capacidades;
     }
@@ -89,7 +88,6 @@ public class JornadaService {
                     jornadaDAO.save(jornada);
                     if(historicoDAO.existsById(jornada.getFechaJornada())) {
 
-
                         for (Historico_Contenedores hc : historico) {
                             if (hc.getFecha() == jornada.getFechaJornada()) {
                                 hc.getContenedores().add(cont);
@@ -104,15 +102,10 @@ public class JornadaService {
                         historicoDAO.save(hc);
                     }
                 }
-
             }
-
         }
-
-
-
+        socketEcoembes.enviarPut("capacidades/", jornada.getFechaJornada().toString() + "/" + jornada.getTotalCapacidad());
         return jornadaToDTO(jornada);
-
     }
 
     public Jornada getJornadaById(int id) {
