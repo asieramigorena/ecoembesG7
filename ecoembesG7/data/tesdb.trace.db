@@ -1,0 +1,24 @@
+2025-12-03 15:49:17.216027+01:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "CONTENEDOR" no encontrada
+Table "CONTENEDOR" not found; SQL statement:
+select * from contenedor [42102-232]
+2025-12-03 15:57:25.631915+01:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "JORNADA" no encontrada
+Table "JORNADA" not found; SQL statement:
+select * from jornada [42102-232]
+2025-12-03 16:04:02.777996+01:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "EMPLEADO" no encontrada
+Table "EMPLEADO" not found; SQL statement:
+select * from empleado [42102-232]
+2025-12-03 16:33:14.101114+01:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "JORNADA" no encontrada
+Table "JORNADA" not found; SQL statement:
+select * from jornada [42102-232]
+2025-12-03 16:33:48.030540+01:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "HISTORICO_CONTENEDOR" no encontrada
+Table "HISTORICO_CONTENEDOR" not found; SQL statement:
+select * from historico_contenedor [42102-232]
+2025-12-03 16:34:32.911520+01:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "CONTENEDOR" no encontrada
+Table "CONTENEDOR" not found; SQL statement:
+select * from contenedor [42102-232]

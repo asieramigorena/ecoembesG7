@@ -2,13 +2,19 @@ package com.ecoembes.external;
 
 import com.ecoembes.dto.CapacidadPlantasDTO;
 import com.ecoembes.dto.CapacidadResponse;
+
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
 public class PlasSBServiceProxy {
 
-    private final String BASE_URL = "http://localhost:9090/capacidades";
+    private final static String BASE_URL = "http://localhost:9090/capacidades";
     private final RestTemplate restTemplate;
 
     public PlasSBServiceProxy() {
@@ -37,4 +43,30 @@ public class PlasSBServiceProxy {
         return capacidadPlantasDTOresultado;
         
     }
+    
+
+    public CapacidadPlantasDTO updateCapacidad(String fecha, double capacidadNueva) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        String url = BASE_URL + "/" + fecha;
+
+        // Crear el DTO con los valores que quieres actualizar
+        CapacidadPlantasDTO capacidadDTO = new CapacidadPlantasDTO(null, capacidadNueva);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<CapacidadPlantasDTO> requestEntity =
+                new HttpEntity<>(capacidadDTO, headers);
+
+        ResponseEntity<CapacidadPlantasDTO> response = restTemplate.exchange(
+                url,
+                HttpMethod.PUT,
+                requestEntity,
+                CapacidadPlantasDTO.class
+        );
+
+        return response.getBody();
+    }
+
 }

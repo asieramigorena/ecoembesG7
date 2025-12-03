@@ -80,7 +80,19 @@ public class JornadaService {
 
         for (Contenedor cont : contenedores) {
             if (cont.getIdContenedor() == idContenedor) {
-
+//            	if (jornada.getPlantaAsignada().getNombre().equals("PlasSB")) {
+//            		PlasSBServiceProxy plas = new PlasSBServiceProxy();
+//            		try {
+//            			if (cont.getNivelActualToneladas() < plas.getCapacidad(jornada.getFechaJornada().toString()).getCapacidadTotal()) {
+//            				jornada.getC.add(cont); 	
+//            				plas.updateCapacidad(jornada.getFechaJornada().toString(), plas.getCapacidad(jornada.getFechaJornada().toString()).getCapacidadTotal()-cont.getNivelActualToneladas());
+//            			}
+//            		} catch(Exception e) {
+//            			throw new IOException("No se puedo asignar el contenedor a PlasSB. ");
+//            		}
+//            			
+//            	}
+            	
                 if (jornada.getTotalCapacidad() < cont.getNivelActualToneladas()) {
                     throw new IOException("No se puede asignar el contenedor. Capacidad total de la planta superada.");
                 } else {
