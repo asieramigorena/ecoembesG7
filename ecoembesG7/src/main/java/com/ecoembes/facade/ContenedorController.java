@@ -93,7 +93,7 @@ public class ContenedorController {
         }
     }
 	
-	
+
 	@Operation(summary = "Buscar contenedores por fecha")
 	@ApiResponses(value = {
 	    @ApiResponse(responseCode = "201", description = "Contenedores obtenidos correctamente"),
@@ -101,6 +101,7 @@ public class ContenedorController {
             @ApiResponse(responseCode = "401", description = "No autorizado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
 	})
+
 	@GetMapping("/{idContenedor}/{fechaInicial}/{fechaFinal}")
 	public ResponseEntity<?> getContsPorFecha(
 	        @RequestParam("idContenedor") int idContenedor,
@@ -117,4 +118,5 @@ public class ContenedorController {
 	        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 	    }
 	}
+
 }

@@ -1,8 +1,12 @@
 package com.ecoembes.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import com.ecoembes.dao.EmpleadoDAO;
+import com.ecoembes.dao.JornadaDAO;
 import com.ecoembes.excepciones.Excepciones;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ecoembes.dto.EmpleadoDTO;
@@ -10,22 +14,22 @@ import com.ecoembes.entity.Empleado;
 
 @Service
 public class EmpleadoService {
-	private static ArrayList<Empleado> empleados = new ArrayList<>();
-    private static Empleado activo;
-	
-	public EmpleadoService() {
-		empleados.add(new Empleado("Jose Maria", "josemari@correo.com", "contrasena1"));
-		empleados.add(new Empleado("Ana Lopez", "analope@correo.com", "contrasena2"));
-	}
 
-	public static ArrayList<Empleado> getEmpleados() {
-		return empleados;
-	}
+    @Autowired
+    private EmpleadoDAO empleadoDAO;
+
+    private static Empleado activo;
+
 
     public EmpleadoDTO login(String correo, String contrasena) throws Exception {
         if (correo.isBlank() || contrasena.isBlank()) {
             throw new Excepciones.CredencialesInvalidasException("Credenciales invalidas");
         }
+
+        Iterable<Empleado> iterable = empleadoDAO.findAll();
+        List<Empleado> empleados = new ArrayList<>();
+        iterable.forEach(empleados::add);
+
         for (Empleado empleado : empleados) {
             if (empleado.getCorreo().equals(correo)) {
                 if (empleado.getToken() != null) {
@@ -44,6 +48,11 @@ public class EmpleadoService {
 	
 	
 	public void logout(String correo) throws Exception {
+
+        Iterable<Empleado> iterable = empleadoDAO.findAll();
+        List<Empleado> empleados = new ArrayList<>();
+        iterable.forEach(empleados::add);
+
 		for (Empleado empleado : empleados) {
 			if (empleado.getCorreo().equals(correo)) {
 				if (empleado.getToken() != null) {

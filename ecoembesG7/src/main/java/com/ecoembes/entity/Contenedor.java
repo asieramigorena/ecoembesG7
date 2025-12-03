@@ -2,28 +2,41 @@ package com.ecoembes.entity;
 
 import java.util.Objects;
 import com.ecoembes.entity.nivelLenado;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "contenedores")
 public class Contenedor {
-	
-	private static int contadorId = 0;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected int idContenedor;
-	protected String ubicacion;
-	protected int codPostal;
-	protected double capMaxima;
-	protected nivelLenado nivelActual;
-	protected int numEnvases;
-	protected double nivelActualToneladas;
+    @Column()
+    protected String ubicacion;
+    @Column()
+    protected int codPostal;
+    @Column()
+    protected double capMaxima;
+    @Enumerated(EnumType.STRING)
+    protected nivelLenado nivelActual;
+    @Column()
+    protected int numEnvases;
+    @Column()
+    protected double nivelActualToneladas;
 	
 	public Contenedor(String ubicacion, int codPostal, double capMaxima) {
 		super();
-		this.idContenedor = contadorId++;
 		this.ubicacion = ubicacion;
 		this.codPostal = codPostal;
 		this.capMaxima = capMaxima;
 		this.nivelActual = nivelLenado.VERDE; 
 	}
 
-	public int getIdContenedor() {
+    public Contenedor() {
+
+    }
+
+    public int getIdContenedor() {
 		return idContenedor;
 	}
 

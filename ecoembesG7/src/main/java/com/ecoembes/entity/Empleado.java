@@ -1,30 +1,46 @@
 package com.ecoembes.entity;
 
-import jakarta.persistence.Entity;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-
+@Entity
+@Table(name = "empleados")
 public class Empleado {
-	private static int contadorId = 0;
-	protected int idPersonal;
-	protected String nombre;
-	protected String correo;
-	protected String contrasena;
-	private LocalDate token;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected int idPersonal;
+    @Column()
+    protected String nombre;
+    @Column()
+    protected String correo;
+    @Column()
+    protected String contrasena;
+    @Column()
+    private LocalDate token;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "asignadorPlanta")
+    private List<Jornada> jornadasJefe;
+    @ManyToMany (mappedBy = "personal")
+    private List<Jornada> jornadas;
 
-	public Empleado(String nombre, String correo, String contrasena) {
+
+
+    public Empleado( String nombre, String correo, String contrasena) {
 		super();
-		this.idPersonal = contadorId++;
 		this.nombre = nombre;
 		this.correo = correo;
 		this.contrasena = contrasena;
 		this.token = null;
 	}
 
-	public int getIdPersonal() {
+    public Empleado() {
+
+    }
+
+    public int getIdPersonal() {
 		return idPersonal;
 	}
 

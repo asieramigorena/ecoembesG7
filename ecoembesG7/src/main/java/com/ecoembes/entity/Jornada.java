@@ -1,22 +1,39 @@
 package com.ecoembes.entity;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name = "jornadas")
 public class Jornada {
-	private static int contadorId = 0;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected int idJornada;
+
+    @ManyToOne()
+    @JoinColumn(name = "asignadorPlanta_id")
 	protected Empleado asignadorPlanta;// Empleado que asigna los contenedores a la planta en cada jornada.
+    @ManyToMany
+    @JoinTable(
+            name = "jornada_empleado",
+            joinColumns = @JoinColumn (name =  "jornada_id"),
+            inverseJoinColumns = @JoinColumn (name = "empleado_id")
+    )
 	protected List<Empleado> personal;	// Empleados asignados a la jornada.
+    @ManyToOne()
+    @JoinColumn(name = "plantaAsignada_id")
 	protected PlantaReciclaje plantaAsignada;
+    @Column()
 	protected double totalCapacidad; // Total de la capacidad que va a tener una planta en una jornada.
-	protected LocalDate fechaJornada;
+	@Column()
+    protected LocalDate fechaJornada;
 	
 	public Jornada(Empleado asignadorPlanta, List<Empleado> personal, PlantaReciclaje plantaAsignada,
 			 double totalCapacidad, LocalDate fechaJornada) {
 		super();
-		this.idJornada = contadorId++;
 		this.asignadorPlanta = asignadorPlanta;
 		this.personal = personal;
 		this.plantaAsignada = plantaAsignada;
@@ -24,8 +41,12 @@ public class Jornada {
 		this.fechaJornada = fechaJornada;
 	}
 
-	
-	public int getIdJornada() {
+    public Jornada() {
+
+    }
+
+
+    public int getIdJornada() {
 		return idJornada;
 	}
 
