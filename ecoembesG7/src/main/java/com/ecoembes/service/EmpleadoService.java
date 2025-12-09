@@ -37,6 +37,7 @@ public class EmpleadoService {
                 }
                 else if (empleado.getContrasena().equals(contrasena)) {
                     empleado.setToken();
+                    empleadoDAO.save(empleado);
                     activo = empleado;
                     return empleadoToDTO(empleado);
                 }
@@ -57,6 +58,7 @@ public class EmpleadoService {
 			if (empleado.getCorreo().equals(correo)) {
 				if (empleado.getToken() != null) {
 					empleado.setTokenNull();
+                    empleadoDAO.save(empleado);
                     activo = null;
 					return;
 				} else {
