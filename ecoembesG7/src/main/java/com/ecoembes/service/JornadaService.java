@@ -10,7 +10,9 @@ import com.ecoembes.dao.Historico_ContenedoresDAO;
 import com.ecoembes.dao.JornadaDAO;
 import com.ecoembes.entity.*;
 import com.ecoembes.dto.CapacidadPlantasDTO;
+import com.ecoembes.external.GatewayFactory;
 import com.ecoembes.external.SocketEcoembes;
+import com.ecoembes.external.Gateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,9 @@ public class JornadaService {
 
     @Autowired
     private SocketEcoembes socketEcoembes;
+
+    @Autowired
+    private PlasSBServiceProxy plasSBServiceProxy;
 
     @Autowired
     private JornadaDAO jornadaDAO;
@@ -53,14 +58,18 @@ public class JornadaService {
 //			}
 //		}
         String fechaString = fecha.toString();
-        PlasSBServiceProxy plasSBServiceProxy = new PlasSBServiceProxy();
+        Gateway gPlas = GatewayFactory.getGateway("PlasSB");
         try {
-        	capacidades.add(plasSBServiceProxy.getCapacidadPlasSB(fechaString));
+            PlasSBServiceProxy plas = (gPlas instanceof PlasSBServiceProxy) ? (PlasSBServiceProxy) gPlas : plasSBServiceProxy;
+            capacidades.add(plas.getCapacidadPlasSB(fechaString));
         } catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
+        Gateway gSocket = GatewayFactory.getGateway("SocketEcoembes");
         try {
-        	capacidades.add(strToCapacidadPlantasDTO(socketEcoembes.enviarGet("capacidad/" + fechaString)));
+            SocketEcoembes socket = (gSocket instanceof SocketEcoembes) ? (SocketEcoembes) gSocket : socketEcoembes;
+            String respuesta = socket.enviar("capacidad/" + fechaString);
+            capacidades.add(strToCapacidadPlantasDTO(respuesta));
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
@@ -116,7 +125,16 @@ public class JornadaService {
                 }
             }
         }
-        socketEcoembes.enviarPut("capacidades/", jornada.getFechaJornada().toString() + "/" + jornada.getTotalCapacidad());
+        Gateway gSocket = GatewayFactory.getGateway("SocketEcoembes");
+        try {
+            SocketEcoembes socket = (gSocket instanceof SocketEcoembes) ? (SocketEcoembes) gSocket : socketEcoembes;
+            // enviar PUT con formato simple: "PUT capacidades/<fecha>/<capacidad>"
+            String bodyMessage = "PUT capacidades/" + jornada.getFechaJornada().toString() + "/" + jornada.getTotalCapacidad();
+            System.out.println(socket.enviar(bodyMessage));
+        } catch (Exception e) {
+            System.err.println("Error enviando actualización por socket: " + e.getMessage());
+        }
+
         return jornadaToDTO(jornada);
     }
 

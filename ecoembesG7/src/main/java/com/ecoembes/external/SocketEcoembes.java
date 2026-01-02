@@ -1,7 +1,7 @@
 package com.ecoembes.external;
 
+import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.io.DataInputStream;
@@ -10,7 +10,10 @@ import java.io.IOException;
 import java.net.Socket;
 
 @Component
-public class SocketEcoembes implements CommandLineRunner {
+public class SocketEcoembes implements Gateway{
+
+    private static SocketEcoembes instance;
+    private Thread hilo;
 
     @Value("${socket.ip}")
     private String serverIP;
@@ -18,9 +21,19 @@ public class SocketEcoembes implements CommandLineRunner {
     @Value("${socket.port}")
     private int serverPort;
 
-    @Override
-    public void run(String... args) {
-        new Thread(() -> {
+    private SocketEcoembes(){
+        init();
+    }
+
+    public static SocketEcoembes getInstance(){
+        if (instance == null){
+            instance = new SocketEcoembes();
+        }
+        return instance;
+    }
+
+    private void init(){
+        hilo = new Thread(() -> {
             try {
                 Thread.sleep(3000);
 
@@ -30,26 +43,12 @@ public class SocketEcoembes implements CommandLineRunner {
             } catch (Exception e) {
                 System.err.println("Error en SocketEcoembes: " + e.getMessage());
             }
-        }).start();
+        });
+        hilo.setDaemon(true);
+        hilo.start();
     }
 
-    public String enviarGet(String recurso, String queryParams) {
-        String query = "GET " + recurso;
-        if (queryParams != null && !queryParams.isEmpty()) {
-            query += "?" + queryParams;
-        }
-        return enviar(query);
-    }
-
-    public String enviarGet(String recurso) {
-        return enviarGet(recurso, null);
-    }
-
-    public void enviarPut(String recurso, String body) {
-        enviar("PUT " + recurso + body);
-    }
-
-    private String enviar(String mensaje) {
+    public String enviar(String mensaje) {
         try (Socket socket = new Socket(serverIP, serverPort);
              DataInputStream in = new DataInputStream(socket.getInputStream());
              DataOutputStream out = new DataOutputStream(socket.getOutputStream())) {
@@ -64,6 +63,13 @@ public class SocketEcoembes implements CommandLineRunner {
 
         } catch (IOException e) {
             throw new RuntimeException("Error al comunicar con ContSocket: " + e.getMessage(), e);
+        }
+    }
+
+    @PreDestroy
+    public void shutdown(){
+        if (hilo != null){
+            hilo.interrupt();
         }
     }
 }
