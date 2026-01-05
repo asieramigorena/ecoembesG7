@@ -3,7 +3,7 @@ package com.ecoembes.external;
 public class GatewayFactory {
     public static Gateway getGateway(String planta){
         if (planta.equals("PlasSB")){
-            return PlasSBServiceProxy.getInstance();
+            return com.ecoembes.external.PlasSBServiceGateway.getInstance();
         } else if (planta.equals("ContSocket")){
             return SocketEcoembes.getInstance();
         } else {

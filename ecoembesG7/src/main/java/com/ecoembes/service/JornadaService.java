@@ -11,6 +11,7 @@ import com.ecoembes.dao.JornadaDAO;
 import com.ecoembes.entity.*;
 import com.ecoembes.dto.CapacidadPlantasDTO;
 import com.ecoembes.external.GatewayFactory;
+import com.ecoembes.external.PlasSBServiceGateway;
 import com.ecoembes.external.SocketEcoembes;
 import com.ecoembes.external.Gateway;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Service;
 import com.ecoembes.dto.JornadaDTO;
 import com.ecoembes.entity.Historico_Contenedores;
 import com.ecoembes.entity.Jornada;
-import com.ecoembes.external.PlasSBServiceProxy;
 
 @Service
 public class JornadaService {
@@ -28,7 +28,7 @@ public class JornadaService {
     private SocketEcoembes socketEcoembes;
 
     @Autowired
-    private PlasSBServiceProxy plasSBServiceProxy;
+    private PlasSBServiceGateway plasSBServiceGateway;
 
     @Autowired
     private JornadaDAO jornadaDAO;
@@ -60,7 +60,7 @@ public class JornadaService {
         String fechaString = fecha.toString();
         Gateway gPlas = GatewayFactory.getGateway("PlasSB");
         try {
-            PlasSBServiceProxy plas = (gPlas instanceof PlasSBServiceProxy) ? (PlasSBServiceProxy) gPlas : plasSBServiceProxy;
+            PlasSBServiceGateway plas = (gPlas instanceof PlasSBServiceGateway) ? (PlasSBServiceGateway) gPlas : plasSBServiceGateway;
             capacidades.add(plas.getCapacidadPlasSB(fechaString));
         } catch (Exception e) {
 			System.err.println(e.getMessage());

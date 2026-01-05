@@ -15,21 +15,21 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class PlasSBServiceProxy implements Gateway {
+public class PlasSBServiceGateway implements Gateway {
 
-    private static PlasSBServiceProxy instance;
+    private static PlasSBServiceGateway instance;
     private static final String BASE_URL = "http://localhost:9090/capacidades";
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
 
-    public static PlasSBServiceProxy getInstance() {
+    public static PlasSBServiceGateway getInstance() {
         if (instance == null) {
-            instance = new PlasSBServiceProxy();
+            instance = new PlasSBServiceGateway();
         }
         return instance;
     }
 
-    private PlasSBServiceProxy() {
+    private PlasSBServiceGateway() {
         this.restTemplate = new RestTemplate();
         this.objectMapper = new ObjectMapper();
     }
