@@ -61,7 +61,6 @@ public class ContenedorService {
 	public void crearContenedor( String ubicacion, int codPostal, double capMaxima) {
     Contenedor cont = new Contenedor(ubicacion, codPostal, capMaxima);
         contenedorDAO.save(cont);
-
 	}
 
 	public ArrayList<ContenedorDTO> getContsPorZona (int codPostal) {
@@ -98,8 +97,6 @@ public class ContenedorService {
 
         return listaConts;
     }
-
-
 
     public void alertaSaturacion() {
 		int contadorRojo = 0;
@@ -145,7 +142,4 @@ public class ContenedorService {
 	    dto.setNumEnvases(contenedor.getNumEnvases());
 	    return dto;
 	}
-
-
-
 }
