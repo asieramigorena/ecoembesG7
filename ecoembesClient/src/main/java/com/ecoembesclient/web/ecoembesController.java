@@ -29,7 +29,7 @@ public class ecoembesController {
     }
 
     /**
-     * Procesa el login
+     * Procesa el login usando la API REST
      */
     @PostMapping("/login")
     public String procesarLogin(
@@ -40,9 +40,7 @@ public class ecoembesController {
         try {
             Empleado empleadoLogado = ecoembesProxy.login(empleado);
 
-            // Guardar usuario en sesión
             request.getSession(true).setAttribute("empleado", empleadoLogado);
-
             return "redirect:/home";
 
         } catch (RuntimeException e) {

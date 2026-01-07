@@ -24,7 +24,7 @@ public class EmpeladoController {
 	
 	@Operation(summary = "Iniciar sesion de un empleado")
 	@ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Sesion iniciada correctamente"),
+            @ApiResponse(responseCode = "200", description = "Sesion iniciada correctamente"),
             @ApiResponse(responseCode = "400", description = "Campos vacios"),
             @ApiResponse(responseCode = "401", description = "Credenciales invalidas"),
             @ApiResponse(responseCode = "404", description = "Empleado no encontrado"),

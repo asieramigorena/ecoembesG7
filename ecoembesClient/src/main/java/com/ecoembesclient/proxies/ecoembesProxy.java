@@ -43,18 +43,18 @@ public class ecoembesProxy {
 
     // Falta por revisar TODO
     public Empleado login(Empleado empleado) {
-        String url = "http://localhost:8080/ecoembes/login";
 
-        // Crear headers
+        String url = creadorMensaje("login", 0, List.of());
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        // Crear body como formulario con parámetros separados
         MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
         form.add("Correo", empleado.correo());
         form.add("Contraseña", empleado.contrasena());
 
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(form, headers);
+        HttpEntity<MultiValueMap<String, String>> request =
+                new HttpEntity<>(form, headers);
 
         try {
             return restTemplate.postForObject(url, request, Empleado.class);
@@ -90,6 +90,7 @@ public class ecoembesProxy {
         }
     }
 
+    /*
     public String creadorMensaje(String entidad, int elementos, List<Object> lista){
         StringBuilder respuesta = new StringBuilder();
         respuesta.append(apiBaseUrl);
@@ -105,6 +106,40 @@ public class ecoembesProxy {
             String key = keyObj == null ? "" : keyObj.toString();
             String value = valObj == null ? "" : URLEncoder.encode(valObj.toString(), StandardCharsets.UTF_8);
             respuesta.append(i == 0 ? "?" : "&").append(key).append("=").append(value);
+        }
+
+        return respuesta.toString();
+    }
+
+     */
+
+    public String creadorMensaje(String entidad, int elementos, List<Object> lista) {
+        StringBuilder respuesta = new StringBuilder(apiBaseUrl);
+
+        if (!apiBaseUrl.endsWith("/") && !entidad.startsWith("/")) {
+            respuesta.append("/");
+        }
+
+        respuesta.append(entidad);
+
+        if (elementos <= 0) {
+            return respuesta.toString();
+        }
+
+        for (int i = 0; i < elementos; i++) {
+            String key = URLEncoder.encode(
+                    String.valueOf(lista.get(i * 2)),
+                    StandardCharsets.UTF_8
+            );
+            String value = URLEncoder.encode(
+                    String.valueOf(lista.get(i * 2 + 1)),
+                    StandardCharsets.UTF_8
+            );
+
+            respuesta.append(i == 0 ? "?" : "&")
+                    .append(key)
+                    .append("=")
+                    .append(value);
         }
 
         return respuesta.toString();
