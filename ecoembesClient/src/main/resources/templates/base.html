@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:replace="${title} :: title">Ecoembes</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<!-- Cabecera -->
+<header>
+    <h1>Ecoembes</h1>
+    <nav>
+        <a th:href="@{/}">Inicio</a>
+        <a th:href="@{/home}">Home</a>
+    </nav>
+</header>
+
+<!-- Contenido principal -->
+<main>
+    <!-- Este es el fragmento que se reemplazará en las vistas hijas -->
+    <div th:replace="~{::content}"></div>
+</main>
+
+<!-- Pie de página -->
+<footer>
+    <p>© 2026 Mi Empresa</p>
+</footer>
+
+</body>
+</html>
