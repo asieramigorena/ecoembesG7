@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="es">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: layout(~{::section})}">
 <head>
-    <meta charset="UTF-8">
-    <title>Inicio de sesión.</title>
-
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-
+    <title>Iniciar Sesión</title>
 </head>
 <body>
+
+<section>
+    <br>
+    <h1> Inicio de sesión </h1>
     <form th:action="@{/login}" th:object="${empleado}" method="post">
         <input type="text" th:field="*{correo}" placeholder="Correo" />
         <input type="password" th:field="*{contrasena}" placeholder="Contraseña" />
@@ -15,5 +16,12 @@
 
         <p th:if="${error}" th:text="${error}" style="color:red"></p>
     </form>
+    <br>
+</section>
+
 </body>
 </html>
+
+
+
+

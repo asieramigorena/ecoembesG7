@@ -1,31 +1,108 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="layout(content)">
 <head>
-    <meta charset="UTF-8">
-    <title th:replace="${title} :: title">Ecoembes</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Simple &mdash; Free HTML5 Bootstrap Website Template by FreeHTML5.co</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Free HTML5 Website Template by FreeHTML5.co" />
+    <meta name="keywords" content="free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
+    <meta name="author" content="FreeHTML5.co" />
+
+    <!--
+      //////////////////////////////////////////////////////
+
+      FREE HTML5 TEMPLATE
+      DESIGNED & DEVELOPED by FreeHTML5.co
+
+      Website: 		http://freehtml5.co/
+      Email: 			info@freehtml5.co
+      Twitter: 		http://twitter.com/fh5co
+      Facebook: 		https://www.facebook.com/fh5co
+
+      //////////////////////////////////////////////////////
+       -->
+
+    <!-- Facebook and Twitter integration -->
+    <meta property="og:title" content=""/>
+    <meta property="og:image" content=""/>
+    <meta property="og:url" content=""/>
+    <meta property="og:site_name" content=""/>
+    <meta property="og:description" content=""/>
+    <meta name="twitter:title" content="" />
+    <meta name="twitter:image" content="" />
+    <meta name="twitter:url" content="" />
+    <meta name="twitter:card" content="" />
+
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/favicon.ico}">
+
+    <!-- Google Fonts  -->
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,300,600,400italic,700" rel="stylesheet" type="text/css">
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" th:href="@{/css/animate.css}">
+
+    <!-- Magnific Popup -->
+    <link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+
+    <!-- Icomoon Icon Fonts -->
+    <link rel="stylesheet" th:href="@{/css/icomoon.css}">
+
+    <!-- Theme style -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <!-- Modernizr JS -->
+    <script th:src="@{/js/modernizr-2.6.2.min.js}"></script>
+    <!-- FOR IE9 below -->
+    <!--[if lt IE 9]>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
 </head>
 <body>
 
-<!-- Cabecera -->
-<header>
-    <h1>Ecoembes</h1>
-    <nav>
-        <a th:href="@{/}">Inicio</a>
-        <a th:href="@{/home}">Home</a>
-    </nav>
-</header>
+<div id="fh5co-wrap">
+    <header id="fh5co-header">
+        <div class="container">
+            <nav class="fh5co-main-nav">
+                <ul>
+                    <li class="fh5co-active"><a href="index.html"><span>Home</span></a></li>
+                    <li><a href="services.html"><span>Services</span></a></li>
+                    <li><a href="about.html"><span>About</span></a></li>
+                    <li><a href="contact.html"><span>Contact</span></a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-<!-- Contenido principal -->
-<main>
-    <!-- Este es el fragmento que se reemplazará en las vistas hijas -->
-    <div th:replace="~{::content}"></div>
+    <div class="fh5co-hero" style="background-image: url(images/hero_1.jpg);" data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center fh5co-table">
+                    <div class="fh5co-intro fh5co-table-cell">
+                        <h1 class="text-center">Ecoembes</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<main class="container my-5">
+    <div th:replace="${content}"></div>
 </main>
 
-<!-- Pie de página -->
-<footer>
-    <p>© 2026 Mi Empresa</p>
-</footer>
+    <footer id="fh5co-footer">
+
+        <p>&copy; Ecoembes</p>
+
+    </footer>
 
 </body>
 </html>
+
+

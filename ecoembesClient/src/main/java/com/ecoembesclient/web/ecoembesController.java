@@ -19,18 +19,15 @@ public class ecoembesController {
         this.ecoembesProxy = ecoembesProxy;
     }
 
-    /**
-     * Muestra el formulario de login
-     */
-    @GetMapping("/")
+    @GetMapping({"/", "/login"})
     public String mostrarLogin(Model model) {
-        model.addAttribute("empleado", new Empleado(null, null));
+
+        if (!model.containsAttribute("empleado")) {
+            model.addAttribute("empleado", new Empleado(null, null));
+        }
         return "login";
     }
 
-    /**
-     * Procesa el login usando la API REST
-     */
     @PostMapping("/login")
     public String procesarLogin(
             @ModelAttribute("empleado") Empleado empleado,
@@ -39,21 +36,23 @@ public class ecoembesController {
 
         try {
             Empleado empleadoLogado = ecoembesProxy.login(empleado);
-
             request.getSession(true).setAttribute("empleado", empleadoLogado);
             return "redirect:/home";
 
         } catch (RuntimeException e) {
-            model.addAttribute("error", e.getMessage());
+            model.addAttribute("error", "Credenciales incorrectas: " + e.getMessage());
+            // Es importante que el objeto empleado vuelva a la vista para no perder lo escrito
+            model.addAttribute("empleado", empleado);
             return "login";
         }
     }
 
-    /**
-     * Página principal tras login
-     */
     @GetMapping("/home")
-    public String home() {
+    public String home(HttpServletRequest request) {
+        // Protección básica: si no hay sesión, al login
+        if (request.getSession().getAttribute("empleado") == null) {
+            return "redirect:/login";
+        }
         return "index";
     }
 }
