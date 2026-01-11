@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ecoembes.dao.EmpleadoDAO;
-import com.ecoembes.dao.JornadaDAO;
 import com.ecoembes.excepciones.Excepciones;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,18 +25,19 @@ public class EmpleadoService {
             throw new Excepciones.CredencialesInvalidasException("Credenciales invalidas");
         }
 
+        // Verificar si ya hay un usuario activo (solo puede haber uno a la vez)
+        if (activo != null && activo.getToken() != null) {
+            throw new Excepciones.ErrorTokenException("Ya hay un usuario con sesion iniciada: " + activo.getCorreo());
+        }
+
         Iterable<Empleado> iterable = empleadoDAO.findAll();
         List<Empleado> empleados = new ArrayList<>();
         iterable.forEach(empleados::add);
 
         for (Empleado empleado : empleados) {
             if (empleado.getCorreo().equals(correo)) {
-                if (empleado.getToken() != null) {
-                    throw new Excepciones.ErrorTokenException("El usuario " + empleado.getCorreo() + " ya tiene una sesion iniciada");
-                }
-                else if (empleado.getContrasena().equals(contrasena)) {
+                if (empleado.getContrasena().equals(contrasena)) {
                     empleado.setToken();
-                    empleadoDAO.save(empleado);
                     activo = empleado;
                     return empleadoToDTO(empleado);
                 }
@@ -47,26 +47,17 @@ public class EmpleadoService {
         throw new Excepciones.CredencialesInvalidasException("Credenciales invalidas");
     }
 	
-	
 	public void logout(String correo) throws Exception {
-
-        Iterable<Empleado> iterable = empleadoDAO.findAll();
-        List<Empleado> empleados = new ArrayList<>();
-        iterable.forEach(empleados::add);
-
-		for (Empleado empleado : empleados) {
-			if (empleado.getCorreo().equals(correo)) {
-				if (empleado.getToken() != null) {
-					empleado.setTokenNull();
-                    empleadoDAO.save(empleado);
-                    activo = null;
-					return;
-				} else {
-					throw new Excepciones.ErrorTokenException("No hay ninguna sesion iniciada para el usuario: " + correo);
-				}
-			}
+		if (activo == null) {
+			throw new Excepciones.ErrorTokenException("No hay ninguna sesion iniciada");
 		}
-		throw new Excepciones.EmpleadoNoEncontradoException("No se ha encontrado el empleado con correo: " + correo);
+
+		if (!activo.getCorreo().equals(correo)) {
+			throw new Excepciones.ErrorTokenException("No hay ninguna sesion iniciada para el usuario: " + correo);
+		}
+
+		activo.setTokenNull();
+		activo = null;
 	}
 
     public static void isLogin() throws Exception {

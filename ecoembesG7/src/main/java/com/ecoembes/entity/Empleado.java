@@ -3,7 +3,6 @@ package com.ecoembes.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,7 +18,7 @@ public class Empleado {
     protected String correo;
     @Column()
     protected String contrasena;
-    @Column()
+    @Transient
     private LocalDate token;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "asignadorPlanta")
     private List<Jornada> jornadasJefe;
@@ -71,7 +70,7 @@ public class Empleado {
 	public LocalDate getToken() {
 		return token;
 	}
-	
+
 	public void setToken() {
 		this.token = LocalDate.now();
 	}
@@ -79,7 +78,7 @@ public class Empleado {
 	public void setTokenNull() {
 		this.token = null;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(contrasena, correo, idPersonal, nombre);

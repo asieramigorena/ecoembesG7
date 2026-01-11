@@ -155,8 +155,8 @@ public class JornadaService {
 
     public static JornadaDTO jornadaToDTO(Jornada jornada) {
         JornadaDTO dto = new JornadaDTO();
-        dto.setAsignadorPlanta(jornada.getAsignadorPlanta());
-        dto.setPlantaAsignada(jornada.getPlantaAsignada());
+        dto.setCorreoAsignador(jornada.getAsignadorPlanta().getCorreo());
+        dto.setNombrePlanta(jornada.getPlantaAsignada().getNombre());
         dto.setTotalCapacidad(jornada.getTotalCapacidad());
         dto.setFechaJornada(jornada.getFechaJornada());
 

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: layout(~{::section})}">
+<head>
+    <title>Asignación</title>
+</head>
+<body>
+
+<section>
+    <br>
+    <h1>Asignación de contenedores</h1>
+    <form th:action="@{/jornada/asignacion}" method="post">
+        <input type="number" name="idJornada" placeholder="Identificador de Jornada" required />
+        <input type="number" name="idContenedor" placeholder="Identificador de Contenedor" required />
+        <button type="submit">Asignar</button>
+    </form>
+
+    <p th:if="${error}" th:text="${error}" style="color:red"></p>
+    <p th:if="${mensaje}" th:text="${mensaje}" style="color:green"></p>
+
+    <div th:if="${jornada}">
+        <h3>Jornada actualizada:</h3>
+        <p>Empleado: <span th:text="${jornada.correoAsignador}"></span></p>
+        <p>Planta: <span th:text="${jornada.nombrePlanta}"></span></p>
+        <p>Capacidad total: <span th:text="${jornada.totalCapacidad}"></span></p>
+        <p>Fecha: <span th:text="${jornada.fechaJornada}"></span></p>
+    </div>
+    <br>
+</section>
+
+</body>
+</html>
+

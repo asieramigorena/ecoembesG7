@@ -70,10 +70,18 @@
         <div class="container">
             <nav class="fh5co-main-nav">
                 <ul>
-                    <li class="fh5co-active"><a href="index.html"><span>Home</span></a></li>
+                    <li class="fh5co-active"><a th:href="index.html"><span>Home</span></a></li>
+                    <li><a th:href="@{/jornada/asignacion}"><span>Asignar Contenedor</span></a></li>
                     <li><a href="services.html"><span>Services</span></a></li>
                     <li><a href="about.html"><span>About</span></a></li>
                     <li><a href="contact.html"><span>Contact</span></a></li>
+                    <li>
+                        <form th:action="@{/logout}" method="post" style="display: inline;">
+                            <button type="submit" style="background: none; border: none; color: inherit; cursor: pointer; font: inherit; padding: 0;">
+                                <span>Logout</span>
+                            </button>
+                        </form>
+                    </li>
                 </ul>
             </nav>
         </div>

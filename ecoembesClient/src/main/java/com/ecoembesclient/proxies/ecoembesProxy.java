@@ -6,6 +6,7 @@ import com.ecoembesclient.data.Jornada;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
@@ -38,7 +39,6 @@ public class ecoembesProxy {
             throw new RuntimeException(e.getResponseBodyAsString());
         }
     }
-
      */
 
     // Falta por revisar TODO
@@ -63,10 +63,10 @@ public class ecoembesProxy {
         }
     }
 
-    public String logout(Empleado empleado) {
+    public void logout(Empleado empleado) {
         String url = creadorMensaje("/logout", 1, Arrays.asList("Correo", empleado.correo()));
         try{
-            return restTemplate.postForObject(url, null, String.class);
+            restTemplate.postForObject(url, null, String.class);
         } catch (HttpStatusCodeException e) {
             throw new RuntimeException(e.getResponseBodyAsString());
         }
@@ -84,7 +84,12 @@ public class ecoembesProxy {
     public Jornada asignarContenedor(int idJornada, int idContenedor){
         String url = creadorMensaje("/jornada/asignacion", 2, Arrays.asList("idJornada", idJornada, "idContenedor", idContenedor));
         try{
-            return restTemplate.postForObject(url, null, Jornada.class);
+            return restTemplate.exchange(
+                url,
+                HttpMethod.PUT,
+                null,
+                Jornada.class
+            ).getBody();
         } catch (HttpStatusCodeException e){
             throw new RuntimeException(e.getResponseBodyAsString());
         }
