@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: layout(~{::section})}">
+<head>
+    <title>Buscar</title>
+</head>
+<body>
+<section>
+    <br>
+    <h1>Buscar Contenedores</h1>
+    <form th:action="@{/contenedor/buscar}" method="post">
+        <input type="number" name="idContenedor" placeholder="Identificador de Contenedor" required />
+        <input type="date" name="fechaInicio" placeholder="Fecha Inicio" required />
+        <input type="date" name="fechaFin" placeholder="Fecha Final" required />
+
+        <button type="submit">Buscar</button>
+    </form>
+
+    <p th:if="${error}" th:text="${error}" style="color:red"></p>
+    <p th:if="${mensaje}" th:text="${mensaje}" style="color:green"></p>
+
+    <div th:if="${contenedor}">
+        <h3>Jornada actualizada:</h3>
+        <p>ID: <span th:text="${contenedor.id}"></span></p>
+        <p>Ubicacion: <span th:text="${contenedor.ubicacion}"></span></p>
+        <p>Codigo Postal: <span th:text="${contenedor.codPostal}"></span></p>
+        <p>Capacidad Maxima: <span th:text="${contenedor.capMaxima}"></span></p>
+        <p>Numero Envases: <span th:text="${contenedor.numEnvases}"></span></p>
+
+    </div>
+
+    <br>
+</section>
+
+</body>
+</html>

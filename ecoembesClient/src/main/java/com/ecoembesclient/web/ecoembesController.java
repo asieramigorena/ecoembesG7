@@ -1,15 +1,20 @@
 package com.ecoembesclient.web;
 
+import com.ecoembesclient.data.Contenedor;
 import com.ecoembesclient.data.Empleado;
 import com.ecoembesclient.data.Jornada;
 import com.ecoembesclient.proxies.ecoembesProxy;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Controller
 public class ecoembesController {
@@ -99,6 +104,39 @@ public class ecoembesController {
         } catch (RuntimeException e) {
             model.addAttribute("error", "Error al asignar contenedor: " + e.getMessage());
             return "asignar";
+        }
+    }
+
+    @GetMapping("/contenedor/buscar")
+    public String mostrarContenedor(HttpServletRequest request) {
+        if (request.getSession().getAttribute("empleado") == null) {
+            return "redirect:/login";
+        }
+        return "buscar";
+    }
+
+    @PostMapping("/contenedor/buscar")
+    public String buscarContenedor(
+            @RequestParam("idContenedor") int idContenedor,
+            @RequestParam("fechaInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+            @RequestParam("fechaFin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin,
+            Model model,
+            HttpServletRequest request) {
+
+        if (request.getSession().getAttribute("empleado") == null) {
+            return "redirect:/login";
+        }
+
+        try {
+            List<Contenedor> resultados = ecoembesProxy.buscarContenedoresPorFecha(idContenedor, fechaInicio, fechaFin);
+            model.addAttribute("resultados", resultados);
+            model.addAttribute("mensaje", "Contenedores encontrados correctamente.");
+            return "buscar";
+
+        } catch (RuntimeException e) {
+            // Mostrar error en la misma página
+            model.addAttribute("error", "Error al buscar contenedores: " + e.getMessage());
+            return "buscar";
         }
     }
 }

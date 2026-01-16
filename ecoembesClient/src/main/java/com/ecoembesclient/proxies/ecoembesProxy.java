@@ -18,6 +18,8 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
+import java.time.LocalDate;
+
 
 @Component
 public class ecoembesProxy {
@@ -149,4 +151,28 @@ public class ecoembesProxy {
 
         return respuesta.toString();
     }
+
+
+    public List<Contenedor> buscarContenedoresPorFecha(int idContenedor, LocalDate fechaInicio, LocalDate fechaFin) {
+        String url = creadorMensaje(
+                "/fecha",   // endpoint real del backend
+                3,
+                Arrays.asList(
+                        "idContenedor", idContenedor,
+                        "fechaInicio", fechaInicio,
+                        "fechaFin", fechaFin
+                )
+        );
+
+        try {
+            Contenedor[] contenedores = restTemplate.getForObject(url, Contenedor[].class);
+            return Arrays.asList(contenedores);
+        } catch (HttpStatusCodeException e) {
+            throw new RuntimeException("Error al buscar contenedores: " + e.getResponseBodyAsString());
+        }
+    }
+
+
+
+
 }
