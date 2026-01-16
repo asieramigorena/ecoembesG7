@@ -155,12 +155,12 @@ public class ecoembesProxy {
 
     public List<Contenedor> buscarContenedoresPorFecha(int idContenedor, LocalDate fechaInicio, LocalDate fechaFin) {
         String url = creadorMensaje(
-                "/fecha",   // endpoint real del backend
+                "/contenedor/fecha",   // endpoint real del backend
                 3,
                 Arrays.asList(
                         "idContenedor", idContenedor,
-                        "fechaInicio", fechaInicio,
-                        "fechaFin", fechaFin
+                        "fechaInicio", fechaInicio.toString(),
+                        "fechaFin", fechaFin.toString()
                 )
         );
 

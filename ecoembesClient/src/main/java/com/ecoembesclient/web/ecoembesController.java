@@ -107,7 +107,7 @@ public class ecoembesController {
         }
     }
 
-    @GetMapping("/contenedor/buscar")
+    @GetMapping("/ecoembes/contenedor/fecha")
     public String mostrarContenedor(HttpServletRequest request) {
         if (request.getSession().getAttribute("empleado") == null) {
             return "redirect:/login";
@@ -115,9 +115,10 @@ public class ecoembesController {
         return "buscar";
     }
 
-    @PostMapping("/contenedor/buscar")
+    @PostMapping("/ecoembes/contenedor/fecha")
     public String buscarContenedor(
             @RequestParam("idContenedor") int idContenedor,
+            //el formato de las fechas es yyyy-mm-dd
             @RequestParam("fechaInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
             @RequestParam("fechaFin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin,
             Model model,
