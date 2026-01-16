@@ -155,7 +155,7 @@ public class ecoembesProxy {
 
     public List<Contenedor> buscarContenedoresPorFecha(int idContenedor, LocalDate fechaInicio, LocalDate fechaFin) {
         String url = creadorMensaje(
-                "/contenedor/fecha",   // endpoint real del backend
+                "/contenedor/fecha",
                 3,
                 Arrays.asList(
                         "idContenedor", idContenedor,
@@ -169,6 +169,23 @@ public class ecoembesProxy {
             return Arrays.asList(contenedores);
         } catch (HttpStatusCodeException e) {
             throw new RuntimeException("Error al buscar contenedores: " + e.getResponseBodyAsString());
+        }
+    }
+
+    public List<Jornada> capacidadesPorFecha(LocalDate fecha){
+        String url = creadorMensaje(
+                "/jornada/capacidades",   // endpoint real del backend
+                3,
+                Arrays.asList(
+                        "fecha", fecha.toString()
+                )
+        );
+
+        try {
+            Jornada[] jornadas = restTemplate.getForObject(url, Jornada[].class);
+            return Arrays.asList(jornadas);
+        } catch (HttpStatusCodeException e) {
+            throw new RuntimeException("Error al buscar las capacidades: " + e.getResponseBodyAsString());
         }
     }
 

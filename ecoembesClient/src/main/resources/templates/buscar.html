@@ -19,14 +19,15 @@
     <p th:if="${error}" th:text="${error}" style="color:red"></p>
     <p th:if="${mensaje}" th:text="${mensaje}" style="color:green"></p>
 
-    <div th:if="${contenedor}">
-        <h3>Contenedor Buscado:</h3>
-        <p>ID: <span th:text="${contenedor.id}"></span></p>
-        <p>Ubicacion: <span th:text="${contenedor.ubicacion}"></span></p>
-        <p>Codigo Postal: <span th:text="${contenedor.codPostal}"></span></p>
-        <p>Capacidad Maxima: <span th:text="${contenedor.capMaxima}"></span></p>
-        <p>Numero Envases: <span th:text="${contenedor.numEnvases}"></span></p>
-
+    <div th:if="${contenedores}">
+        <h3>Contenedores encontrados:</h3>
+        <div th:each="contenedor : ${contenedores}" style="border:1px solid #ccc; padding:10px; margin:10px 0;">
+            <p><strong>ID:</strong> <span th:text="${contenedor.idContenedor}"></span></p>
+            <p><strong>Ubicación:</strong> <span th:text="${contenedor.ubicacion}"></span></p>
+            <p><strong>Código Postal:</strong> <span th:text="${contenedor.codPostal}"></span></p>
+            <p><strong>Capacidad Máxima:</strong> <span th:text="${contenedor.capMaxima}"></span></p>
+            <p><strong>Número Envases:</strong> <span th:text="${contenedor.numEnvases}"></span></p>
+        </div>
     </div>
 
     <br>

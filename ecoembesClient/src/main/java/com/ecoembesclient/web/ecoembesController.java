@@ -129,8 +129,8 @@ public class ecoembesController {
         }
 
         try {
-            List<Contenedor> resultados = ecoembesProxy.buscarContenedoresPorFecha(idContenedor, fechaInicio, fechaFin);
-            model.addAttribute("resultados", resultados);
+            List<Contenedor> contenedores = ecoembesProxy.buscarContenedoresPorFecha(idContenedor, fechaInicio, fechaFin);
+            model.addAttribute("contenedores", contenedores);
             model.addAttribute("mensaje", "Contenedores encontrados correctamente.");
             return "buscar";
 
@@ -138,6 +138,35 @@ public class ecoembesController {
             // Mostrar error en la misma página
             model.addAttribute("error", "Error al buscar contenedores: " + e.getMessage());
             return "buscar";
+        }
+    }
+    @GetMapping("/ecoembes/jornada/capacidades")
+    public String mostrarCapacidadesPorFecha(HttpServletRequest request) {
+        if (request.getSession().getAttribute("empleado") == null) {
+            return "redirect:/login";
+        }
+        return "buscarCap";
+    }
+
+    @PostMapping("/ecoembes/jornada/capacidades")
+    public String capacidadesPorFecha(
+            @RequestParam("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha,
+            Model model,
+            HttpServletRequest request) {
+
+        if (request.getSession().getAttribute("empleado") == null) {
+            return "redirect:/login";
+        }
+
+        try {
+            List<Jornada> jornadas = ecoembesProxy.capacidadesPorFecha(fecha);
+            model.addAttribute("jornadas", jornadas);
+            model.addAttribute("mensaje", "Jornadas obtenida correctamente.");
+            return "buscarCap";
+
+        } catch (RuntimeException e) {
+            model.addAttribute("error", "Error al buscar las Jornadas: " + e.getMessage());
+            return "buscarCap";
         }
     }
 }

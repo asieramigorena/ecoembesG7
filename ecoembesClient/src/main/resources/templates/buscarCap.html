@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: layout(~{::section})}">
+<head>
+    <title>Buscar</title>
+</head>
+<body>
+<section>
+    <br>
+    <h1>Preguntar Capacidad</h1>
+    <form th:action="@{/ecoembes/jornada/capacidades}" method="post">
+        <input type="date" name="fecha" placeholder="fecha" required />
+
+        <button type="submit">Buscar</button>
+    </form>
+
+    <p th:if="${error}" th:text="${error}" style="color:red"></p>
+    <p th:if="${mensaje}" th:text="${mensaje}" style="color:green"></p>
+
+    <div th:if="${jornadas}">
+        <h3>Capacidades encontradas:</h3>
+        <div th:each="jornada : ${jornadas}" style="border:1px solid #ccc; padding:10px; margin:10px 0;">
+            <p><strong>ID:</strong> <span th:text="${jornada.fechaJornada}"></span></p>
+            <p><strong>Planta:</strong> <span th:text="${jornada.nombrePlanta}"></span></p>
+            <p><strong>Capacidad:</strong> <span th:text="${jornada.totalCapacidad}"></span></p>
+
+
+        </div>
+    </div>
+
+    <br>
+</section>
+
+</body>
+</html>
