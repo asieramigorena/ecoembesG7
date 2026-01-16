@@ -30,6 +30,8 @@ public class Jornada {
 	protected double totalCapacidad; // Total de la capacidad que va a tener una planta en una jornada.
 	@Column()
     protected LocalDate fechaJornada;
+    @OneToOne(mappedBy = "jornada", cascade = CascadeType.ALL)
+    private Historico_Contenedores historico;
 	
 	public Jornada(Empleado asignadorPlanta, List<Empleado> personal, PlantaReciclaje plantaAsignada,
 			 double totalCapacidad, LocalDate fechaJornada) {

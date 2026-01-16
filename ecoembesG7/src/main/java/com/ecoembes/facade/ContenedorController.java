@@ -103,8 +103,8 @@ public class ContenedorController {
     @GetMapping("/fecha")
     public ResponseEntity<?> getContsPorFecha(
             @RequestParam("idContenedor") int idContenedor,
-            @RequestParam("fechaInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
-            @RequestParam("fechaFin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin) {
+            @RequestParam("fechaInicio yyyy-mm-dd") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+            @RequestParam("fechaFin yyyy-mm-dd") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin) {
 
         try {
             EmpleadoService.isLogin();

@@ -23,8 +23,10 @@ public class Contenedor {
     protected int numEnvases;
     @Column()
     protected double nivelActualToneladas;
-	
-	public Contenedor(String ubicacion, int codPostal, double capMaxima) {
+
+
+
+    public Contenedor(String ubicacion, int codPostal, double capMaxima) {
 		super();
 		this.ubicacion = ubicacion;
 		this.codPostal = codPostal;

@@ -12,6 +12,9 @@ public class Historico_Contenedores {
     private LocalDate fecha;
     @OneToMany
     private List<Contenedor> contenedores;
+    @OneToOne
+    @JoinColumn(name = "jornada_fecha") // FK hacia la jornada
+    private Jornada jornada; // Cada histórico pertenece a una única jornada
 
 
     public Historico_Contenedores(LocalDate fecha, List<Contenedor> contenedores) {
@@ -24,6 +27,8 @@ public class Historico_Contenedores {
     public LocalDate getFecha() {
         return fecha;
     }
+
+
     public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }

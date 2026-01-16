@@ -87,6 +87,7 @@ public class JornadaService {
         List<Historico_Contenedores> historico = new ArrayList<>();
         iterable2.forEach(historico::add);
 
+
         for (Contenedor cont : contenedores) {
             if (cont.getIdContenedor() == idContenedor) {
 //            	if (jornada.getPlantaAsignada().getNombre().equals("PlasSB")) {
@@ -116,10 +117,9 @@ public class JornadaService {
                             }
                         }
                     }else{
-                        Historico_Contenedores hc = new Historico_Contenedores();
-                        ArrayList<Contenedor> c= new ArrayList<>();
-                        hc.setFecha(jornada.getFechaJornada());
-                        hc.setContenedores(c);
+                        List<Contenedor> c = new ArrayList<>();
+                        Historico_Contenedores hc = new Historico_Contenedores(jornada.getFechaJornada(), c);
+                        hc.getContenedores().add(cont);
                         historicoDAO.save(hc);
                     }
                 }
