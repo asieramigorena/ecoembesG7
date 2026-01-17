@@ -24,6 +24,7 @@ import java.time.LocalDate;
 @Component
 public class ecoembesProxy {
     private final RestTemplate restTemplate;
+    private String correoIniciado;
 
     @Value("${api.base.url}")
     private String apiBaseUrl;
@@ -57,7 +58,6 @@ public class ecoembesProxy {
 
         HttpEntity<MultiValueMap<String, String>> request =
                 new HttpEntity<>(form, headers);
-
         try {
             return restTemplate.postForObject(url, request, Empleado.class);
         } catch (HttpStatusCodeException e) {
@@ -65,14 +65,47 @@ public class ecoembesProxy {
         }
     }
 
+    /*
     public void logout(Empleado empleado) {
         String url = creadorMensaje("/logout", 1, Arrays.asList("Correo", empleado.correo()));
+        System.out.println(url);
+        System.out.flush();
         try{
             restTemplate.postForObject(url, null, String.class);
+         //   correoIniciado = null;
         } catch (HttpStatusCodeException e) {
             throw new RuntimeException(e.getResponseBodyAsString());
         }
     }
+
+    */
+    public void logout(String correo) {
+
+        if (correo == null || correo.isBlank()) {
+            throw new IllegalArgumentException("El correo no puede estar vacío");
+        }
+
+        String url = creadorMensaje("logout", 0, List.of());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
+        form.add("Correo", correo);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(form, headers);
+
+        try {
+            restTemplate.postForObject(url, request, String.class);
+            System.out.println("Logout realizado para: " + correo);
+        } catch (HttpStatusCodeException e) {
+            throw new RuntimeException("Error logout backend: " + e.getResponseBodyAsString());
+        }
+    }
+
+
+
+
 
     public Contenedor crearContenedor(Contenedor contenedor){
         String url = creadorMensaje("/contenedor", 3, Arrays.asList("ubicacion", contenedor.ubicacion(), "codPostal", contenedor.codPostal(), "capacidadMax", contenedor.capMaxima()));

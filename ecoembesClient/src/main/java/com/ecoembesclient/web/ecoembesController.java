@@ -61,7 +61,7 @@ public class ecoembesController {
         }
         return "index";
     }
-
+/*
     @PostMapping("/logout")
     public String logout(HttpServletRequest request) {
         Empleado empleado = (Empleado) request.getSession().getAttribute("empleado");
@@ -75,6 +75,46 @@ public class ecoembesController {
         request.getSession().invalidate();
         return "redirect:/login";
     }
+
+ */
+    // Mostrar formulario de logout
+    @GetMapping({"/logout"})
+    public String mostrarLogout(Model model) {
+
+        if (!model.containsAttribute("empleado")) {
+            model.addAttribute("empleado", new Empleado(null, null));
+        }
+        return "logout";
+    }
+
+    @PostMapping("/logout")
+    public String procesarLogout(
+            @RequestParam("correo") String correo,
+            Model model,
+            HttpServletRequest request) {
+
+        try {
+            if (correo == null || correo.isBlank()) {
+                throw new RuntimeException("Debe introducir su correo para cerrar sesión");
+            }
+
+            // Llamamos al proxy que hace POST al backend
+            ecoembesProxy.logout(correo);
+
+            // Invalidamos la sesión local
+            request.getSession().invalidate();
+
+            return "redirect:/login";
+
+        } catch (RuntimeException e) {
+            model.addAttribute("error", "Error cerrando sesión: " + e.getMessage());
+            model.addAttribute("correo", correo);
+            return "logout"; // muestra el mismo formulario
+        }
+    }
+
+
+
 
     @GetMapping("/jornada/asignacion")
     public String mostrarAsignacion(HttpServletRequest request) {

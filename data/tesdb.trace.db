@@ -73,3 +73,11 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: /home/jonfer/Ide
 	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:286)
 	... 50 more
+2026-01-17 16:41:18.659554+01:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "CONTENEDOR" no encontrada
+Table "CONTENEDOR" not found; SQL statement:
+select * from contenedor: [42102-232]
+2026-01-17 16:41:21.753981+01:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "select * from contenedores[*]:"
+Syntax error in SQL statement "select * from contenedores[*]:"; SQL statement:
+select * from contenedores: [42000-232]
