@@ -2,7 +2,7 @@ package com.ecoembes.entity;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -14,7 +14,7 @@ public class PlantaReciclaje {
     @Column
 	protected String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "plantaAsignada")
-    protected ArrayList<Jornada> jornadas;
+    protected List<Jornada> jornadas;
 
 	public PlantaReciclaje(String nombre) {
 		super();
