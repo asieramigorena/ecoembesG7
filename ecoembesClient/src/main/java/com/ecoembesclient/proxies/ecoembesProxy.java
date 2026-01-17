@@ -1,5 +1,6 @@
 package com.ecoembesclient.proxies;
 
+import com.ecoembesclient.data.CapacidadPlantas;
 import com.ecoembesclient.data.Contenedor;
 import com.ecoembesclient.data.Empleado;
 import com.ecoembesclient.data.Jornada;
@@ -205,7 +206,7 @@ public class ecoembesProxy {
         }
     }
 
-    public List<Jornada> capacidadesPorFecha(LocalDate fecha){
+    public List<CapacidadPlantas> capacidadesPorFecha(LocalDate fecha){
         String url = creadorMensaje(
                 "/jornada/capacidades",   // endpoint real del backend
                 3,
@@ -215,8 +216,8 @@ public class ecoembesProxy {
         );
 
         try {
-            Jornada[] jornadas = restTemplate.getForObject(url, Jornada[].class);
-            return Arrays.asList(jornadas);
+            CapacidadPlantas[] capacidades = restTemplate.getForObject(url, CapacidadPlantas[].class);
+            return Arrays.asList(capacidades);
         } catch (HttpStatusCodeException e) {
             throw new RuntimeException("Error al buscar las capacidades: " + e.getResponseBodyAsString());
         }

@@ -1,5 +1,6 @@
 package com.ecoembesclient.web;
 
+import com.ecoembesclient.data.CapacidadPlantas;
 import com.ecoembesclient.data.Contenedor;
 import com.ecoembesclient.data.Empleado;
 import com.ecoembesclient.data.Jornada;
@@ -199,13 +200,13 @@ public class ecoembesController {
         }
 
         try {
-            List<Jornada> jornadas = ecoembesProxy.capacidadesPorFecha(fecha);
-            model.addAttribute("jornadas", jornadas);
-            model.addAttribute("mensaje", "Jornadas obtenida correctamente.");
+            List<CapacidadPlantas> capacidades = ecoembesProxy.capacidadesPorFecha(fecha);
+            model.addAttribute("capacidades", capacidades);
+            model.addAttribute("mensaje", "Capacidades obtenida correctamente.");
             return "buscarCap";
 
         } catch (RuntimeException e) {
-            model.addAttribute("error", "Error al buscar las Jornadas: " + e.getMessage());
+            model.addAttribute("error", "Error al buscar las Capacidades: " + e.getMessage());
             return "buscarCap";
         }
     }
