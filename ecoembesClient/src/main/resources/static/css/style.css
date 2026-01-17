@@ -22,6 +22,12 @@ body {
   height: 100%;
   position: relative;
 }
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
 @media screen and (max-width: 768px) {
   body {
     font-size: 17px;
@@ -80,14 +86,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #fh5co-footer {
-  padding-top: 4em;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1;
-  height: 100px;
-  background: #333333;
-  font-size: 18px;
+    position: page;
+    width: 100%;
+    padding: 3em 1em;
+    margin-top: 5em;
+    background: #333333;
+    font-size: 18px;
+    z-index: 1;
+
+    display: flex;
+    justify-content: left;
+    text-align: left;
 }
 @media screen and (max-width: 992px) {
   #fh5co-footer {
