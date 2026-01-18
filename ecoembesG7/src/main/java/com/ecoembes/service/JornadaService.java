@@ -65,7 +65,7 @@ public class JornadaService {
         } catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
-        Gateway gSocket = GatewayFactory.getGateway("SocketEcoembes");
+        Gateway gSocket = GatewayFactory.getGateway("ContSocket");
         try {
             SocketEcoembes socket = (gSocket instanceof SocketEcoembes) ? (SocketEcoembes) gSocket : socketEcoembes;
             String respuesta = socket.enviar("capacidad/" + fechaString);

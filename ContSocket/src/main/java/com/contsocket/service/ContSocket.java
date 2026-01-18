@@ -39,13 +39,10 @@ public class ContSocket implements CommandLineRunner {
                     handleClient(socket);
                 }
             } catch (IOException ex) {
-                if (running) {
-                    throw new RuntimeException(ex);
-                }
+                if (running) throw new RuntimeException(ex);
             } finally {
                 try {
-                    assert socket != null;
-                    socket.close();
+                    if (socket != null) socket.close();
                 } catch (IOException e) {
                     System.err.println(e.getMessage());
                 }
@@ -55,48 +52,75 @@ public class ContSocket implements CommandLineRunner {
     }
 
     private void handleClient(Socket socket) {
-        try (socket; DataInputStream in = new DataInputStream(socket.getInputStream());
+        try (socket;
+             DataInputStream in = new DataInputStream(socket.getInputStream());
              DataOutputStream out = new DataOutputStream(socket.getOutputStream())) {
-            try {
 
-                String mensaje = in.readUTF();
-                System.out.println("Mensaje recibido: " + mensaje);
-                String respuesta = processGetQuery(mensaje);
-                out.writeUTF(respuesta);
+            String mensaje = in.readUTF();
+            System.out.println("Mensaje recibido: " + mensaje);
 
-            } catch (IOException e) {
-                System.err.println(e.getMessage());
-            }
+            String respuesta = processQuery(mensaje);
+
+            out.writeUTF(respuesta);
+            out.flush();
+
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
     }
 
-    private String processGetQuery(String query) {
-        if (!query.toUpperCase().startsWith("GET")) {
-            return "ERROR;Formato inválido";
+    // Solución de ChatGpt
+    /**
+     * Formatos soportados (solo estos 2):
+     * - capacidad/yyyy-MM-dd              -> GET implícito
+     * - capacidad/yyyy-MM-dd/valor        -> PUT implícito
+     */
+    private String processQuery(String raw) {
+        if (raw == null) return "ERROR;Query vacía";
+
+        String q = raw.trim();
+        if (q.isEmpty()) return "ERROR;Query vacía";
+
+        // admitir con o sin "/" inicial
+        if (q.startsWith("/")) q = q.substring(1);
+
+        String[] p = q.split("/");
+        if (p.length < 2) return "ERROR;Query incompleta. Use capacidad/fecha o capacidad/fecha/valor";
+
+        if (!"capacidad".equalsIgnoreCase(p[0].trim())) {
+            return "ERROR;Recurso no encontrado: " + p[0];
         }
 
-        String[] parts = query.split(" ");
-        if (parts.length < 2) {
-            return "ERROR;Query incompleta";
+        String fechaStr = p[1].trim();
+        if (fechaStr.isEmpty()) return "ERROR;Fecha vacía";
+
+        // GET implícito: capacidad/fecha
+        if (p.length == 2) {
+            return capacidadService.getCapacidadPorFecha(fechaStr);
         }
 
-        String path = parts[1];
-        if (path.startsWith("/capacidad/") || path.startsWith("capacidad/")) {
-            if (parts[0].equalsIgnoreCase("PUT")) {
-                String[] datos = path.split("/");
-                Capacidad c = new Capacidad(LocalDate.parse(datos[1]), Double.parseDouble(datos[2]));
-                return capacidadService.save(c).toString();
-            } else if (parts[0].equalsIgnoreCase("GET")){
-                String fecha = path.substring(path.lastIndexOf("/") + 1);
-                return capacidadService.getCapacidadPorFecha(fecha);
-            } else {
-                return "ERROR;Método no soportado";
+        // PUT implícito: capacidad/fecha/valor
+        if (p.length == 3) {
+            String valorStr = p[2].trim();
+            if (valorStr.isEmpty()) return "ERROR;Valor vacío";
+
+            try {
+                LocalDate fecha = LocalDate.parse(fechaStr);
+                double valor = Double.parseDouble(valorStr);
+
+                Capacidad c = capacidadService.findById(fecha)
+                        .orElseGet(() -> new Capacidad(fecha, valor));
+                c.setCapacidad(valor);
+
+                Capacidad guardada = capacidadService.save(c);
+                return guardada.getId() + ";" + guardada.getCapacidad();
+
+            } catch (Exception e) {
+                return "ERROR;Formato inválido";
             }
         }
 
-        return "ERROR;Recurso no encontrado";
+        return "ERROR;Formato inválido. Use capacidad/fecha o capacidad/fecha/valor";
     }
 
     @PreDestroy
@@ -104,9 +128,7 @@ public class ContSocket implements CommandLineRunner {
         System.out.println("Cerrando socket servidor...");
         running = false;
         try {
-            if (serverSocket != null && !serverSocket.isClosed()) {
-                serverSocket.close();
-            }
+            if (serverSocket != null && !serverSocket.isClosed()) serverSocket.close();
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
