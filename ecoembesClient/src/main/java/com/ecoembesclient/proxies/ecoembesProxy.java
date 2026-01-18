@@ -198,6 +198,7 @@ public class ecoembesProxy {
         }
     }
 
+    /*
     public List<CapacidadPlantas> capacidadesPorFecha(LocalDate fecha){
         String url = creadorMensaje(
                 "/jornada/capacidades",   // endpoint real del backend
@@ -212,6 +213,36 @@ public class ecoembesProxy {
             return Arrays.asList(capacidades);
         } catch (HttpStatusCodeException e) {
             throw new RuntimeException("Error al buscar las capacidades: " + e.getResponseBodyAsString());
+        }
+    }
+
+     */
+
+    public List<CapacidadPlantas> obtenerCapacidadesPorFecha(LocalDate fecha) {
+
+        if (fecha == null) {
+            throw new IllegalArgumentException("La fecha no puede ser nula");
+        }
+
+        String url = creadorMensaje(
+                "jornada/capacidades",
+                1,
+                List.of(
+                        "fecha", fecha.toString()
+                )
+        );
+
+        try {
+            CapacidadPlantas[] respuesta =
+                    restTemplate.getForObject(url, CapacidadPlantas[].class);
+
+            return Arrays.asList(respuesta);
+
+        } catch (HttpStatusCodeException e) {
+            throw new RuntimeException(
+                    "Error al obtener capacidades: " + e.getResponseBodyAsString(),
+                    e
+            );
         }
     }
 

@@ -180,6 +180,8 @@ public class ecoembesController {
             return "buscar";
         }
     }
+
+    /*
     @GetMapping("/ecoembes/jornada/capacidades")
     public String mostrarCapacidadesPorFecha(HttpServletRequest request) {
         if (request.getSession().getAttribute("empleado") == null) {
@@ -207,6 +209,49 @@ public class ecoembesController {
         } catch (RuntimeException e) {
             model.addAttribute("error", "Error al buscar las Capacidades: " + e.getMessage());
             return "buscarCap";
+        }
+    }
+
+
+     */
+
+    @GetMapping("ecoembes/jornada/capacidades")
+    public String mostrarCapacidades(HttpServletRequest request) {
+
+        if (request.getSession().getAttribute("empleado") == null) {
+            return "redirect:/login";
+        }
+
+        return "capacidades";
+    }
+
+    @PostMapping("ecoembes/jornada/capacidades")
+    public String consultarCapacidades(
+            @RequestParam("fecha")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate fecha,
+            Model model,
+            HttpServletRequest request) {
+
+        if (request.getSession().getAttribute("empleado") == null) {
+            return "redirect:/login";
+        }
+
+        try {
+            List<CapacidadPlantas> capacidades =
+                    ecoembesProxy.obtenerCapacidadesPorFecha(fecha);
+
+            model.addAttribute("capacidades", capacidades);
+            model.addAttribute("fecha", fecha);
+            model.addAttribute("mensaje", "Consulta realizada correctamente");
+
+            return "capacidades";
+
+        } catch (RuntimeException e) {
+            model.addAttribute("error",
+                    "Error al consultar capacidades: " + e.getMessage());
+            model.addAttribute("fecha", fecha);
+            return "capacidades";
         }
     }
 

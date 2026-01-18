@@ -436,3 +436,7 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: /home/jonfer/Ide
 	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:286)
 	... 50 more
+2026-01-18 17:48:07.747342+01:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "CONTENEDOR" no encontrada
+Table "CONTENEDOR" not found; SQL statement:
+select * from contenedor [42102-232]

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: layout(~{::section})}">
+
+<section>
+    <br>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 text-center">
+            <h2>Consulta de capacidades por jornada</h2>
+            <p>Seleccione una fecha para consultar la capacidad de las plantas.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+
+            <form th:action="@{/ecoembes/jornada/capacidades}" method="post">
+
+                <div class="form-group">
+                    <label for="fecha">Fecha</label>
+                    <input type="date"
+                           class="form-control"
+                           id="fecha"
+                           name="fecha"
+                           th:value="${fecha}"
+                           required/>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">
+                        Consultar capacidad
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <br/>
+
+    <div class="row" th:if="${mensaje}">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="alert alert-success" th:text="${mensaje}"></div>
+        </div>
+    </div>
+
+    <div class="row" th:if="${error}">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="alert alert-danger" th:text="${error}"></div>
+        </div>
+    </div>
+
+    <div class="row" th:if="${capacidades != null}">
+        <div class="col-md-10 col-md-offset-1">
+
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th>Planta</th>
+                    <th>Capacidad total</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="cap : ${capacidades}">
+                    <td th:text="${cap.nombrePlanta()}"></td>
+                    <td th:text="${cap.capacidadTotal()}"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <p class="text-center"
+               th:if="${capacidades.isEmpty()}">
+                No hay datos para la fecha seleccionada.
+            </p>
+
+        </div>
+    </div>
+
+</section>
+
+</html>
