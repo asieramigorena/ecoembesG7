@@ -223,6 +223,23 @@ public class ecoembesProxy {
         }
     }
 
+    public List<Contenedor> buscarContenedoresPorZona( int zona) {
+        String url = creadorMensaje(
+                "/contenedor/zona",
+                1,
+                Arrays.asList(
+                        "codPostal", zona
+
+                        )
+        );
+
+        try {
+            Contenedor[] contenedores = restTemplate.getForObject(url, Contenedor[].class);
+            return Arrays.asList(contenedores);
+        } catch (HttpStatusCodeException e) {
+            throw new RuntimeException("Error al buscar contenedores: " + e.getResponseBodyAsString());
+        }
+    }
 
 
 

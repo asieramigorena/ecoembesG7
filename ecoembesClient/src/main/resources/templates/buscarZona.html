@@ -7,11 +7,10 @@
 <body>
 <section>
     <br>
-    <h1>Buscar Contenedores Fecha</h1>
-    <form th:action="@{/ecoembes/contenedor/fecha}" method="post">
-        <input type="number" name="idContenedor" placeholder="Identificador de Contenedor" required />
-        <input type="date" name="fechaInicio" placeholder="Fecha Inicio" required />
-        <input type="date" name="fechaFin" placeholder="Fecha Final" required />
+    <h1>Buscar Contenedores Zona</h1>
+    <form th:action="@{/ecoembes/contenedor/zona}" method="post">
+        <input type="number" name="codPostal" placeholder="Codigo Postal" required />
+
 
         <button type="submit">Buscar</button>
     </form>

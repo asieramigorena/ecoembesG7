@@ -176,7 +176,6 @@ public class ecoembesController {
             return "buscar";
 
         } catch (RuntimeException e) {
-            // Mostrar error en la misma página
             model.addAttribute("error", "Error al buscar contenedores: " + e.getMessage());
             return "buscar";
         }
@@ -208,6 +207,36 @@ public class ecoembesController {
         } catch (RuntimeException e) {
             model.addAttribute("error", "Error al buscar las Capacidades: " + e.getMessage());
             return "buscarCap";
+        }
+    }
+
+    @GetMapping("/ecoembes/contenedor/zona")
+    public String mostrarContenedorZona(HttpServletRequest request) {
+        if (request.getSession().getAttribute("empleado") == null) {
+            return "redirect:/login";
+        }
+        return "buscarZona";
+    }
+
+    @PostMapping("/ecoembes/contenedor/zona")
+    public String buscarContenedorZona(
+            @RequestParam("codPostal") int zona,
+            Model model,
+            HttpServletRequest request) {
+
+        if (request.getSession().getAttribute("empleado") == null) {
+            return "redirect:/login";
+        }
+
+        try {
+            List<Contenedor> contenedores = ecoembesProxy.buscarContenedoresPorZona( zona);
+            model.addAttribute("contenedores", contenedores);
+            model.addAttribute("mensaje", "Contenedores encontrados correctamente.");
+            return "buscarZona";
+
+        } catch (RuntimeException e) {
+            model.addAttribute("error", "Error al buscar contenedores: " + e.getMessage());
+            return "buscarZona";
         }
     }
 }
