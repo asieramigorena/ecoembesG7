@@ -239,5 +239,38 @@ public class ecoembesController {
             return "buscarZona";
         }
     }
+
+    @GetMapping("/ecoembes/contenedor/crear")
+    public String crearCont(HttpServletRequest request) {
+        if (request.getSession().getAttribute("empleado") == null) {
+            return "redirect:/login";
+        }
+        return "crearCont";
+    }
+
+    @PostMapping("/ecoembes/contenedor/crear")
+    public String crearContenedor(
+            @RequestParam("ubicacion") String ubicacion,
+            @RequestParam("codPostal") int codPostal,
+            @RequestParam("capacidadMax") double capMaxima,
+            Model model,
+            HttpServletRequest request) {
+
+        if (request.getSession().getAttribute("empleado") == null) {
+            return "redirect:/login";
+        }
+
+        try {
+            Contenedor contenedor = ecoembesProxy.crearContenedor(ubicacion, codPostal, capMaxima);
+
+            model.addAttribute("contenedor", contenedor);
+            model.addAttribute("mensaje", "Contenedor creado correctamente.");
+            return "crearCont";
+
+        } catch (RuntimeException e) {
+            model.addAttribute("error", "Error al crear el contenedor: " + e.getMessage());
+            return "crearCont";
+        }
+    }
 }
 

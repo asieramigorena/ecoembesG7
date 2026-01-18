@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: layout(~{::section})}">
+<head>
+    <title>Crear</title>
+</head>
+<body>
+<section>
+    <br>
+    <h1>Crear Contenedor</h1>
+    <form th:action="@{/ecoembes/contenedor/crear}" method="post">
+        <input type="text" name="ubicacion" placeholder="Ubicacion" required />
+        <input type="number" name="codPostal" placeholder="Codigo Postal" required />
+        <input type="number" name="capacidadMax" placeholder="Capacidad Maxima" required />
+
+        <button type="submit">Crear Contenedor</button>
+    </form>
+
+    <p th:if="${error}" th:text="${error}" style="color:red"></p>
+    <p th:if="${mensaje}" th:text="${mensaje}" style="color:green"></p>
+
+    <div th:if="${contenedor}">
+        <h3>Contenedores encontrados:</h3>
+        <p><strong>Ubicación:</strong> <span th:text="${contenedor.ubicacion}"></span></p>
+        <p><strong>Código Postal:</strong> <span th:text="${contenedor.codPostal}"></span></p>
+        <p><strong>Capacidad Máxima:</strong> <span th:text="${contenedor.capMaxima}"></span></p>
+    </div>
+
+    <br>
+</section>
+
+</body>
+</html>

@@ -107,16 +107,6 @@ public class ecoembesProxy {
 
 
 
-
-    public Contenedor crearContenedor(Contenedor contenedor){
-        String url = creadorMensaje("/contenedor", 3, Arrays.asList("ubicacion", contenedor.ubicacion(), "codPostal", contenedor.codPostal(), "capacidadMax", contenedor.capMaxima()));
-        try{
-            return restTemplate.postForObject(url, null, Contenedor.class);
-        } catch (HttpStatusCodeException e){
-            throw new RuntimeException(e.getResponseBodyAsString());
-        }
-    }
-
     public Jornada asignarContenedor(int idJornada, int idContenedor){
         String url = creadorMensaje("/jornada/asignacion", 2, Arrays.asList("idJornada", idJornada, "idContenedor", idContenedor));
         try{
@@ -238,6 +228,26 @@ public class ecoembesProxy {
             return Arrays.asList(contenedores);
         } catch (HttpStatusCodeException e) {
             throw new RuntimeException("Error al buscar contenedores: " + e.getResponseBodyAsString());
+        }
+    }
+
+
+    public Contenedor crearContenedor(String ubicacion, int codPostal, double capMax) {
+        String url = creadorMensaje("/contenedor/crear", 3, Arrays.asList(
+                "ubicacion", ubicacion,
+                "codPostal", codPostal,
+                "capacidadMax", capMax
+        ));
+
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("ubicacion", ubicacion);
+        body.add("codPostal", String.valueOf(codPostal));
+        body.add("capacidadMax", String.valueOf(capMax));
+
+        try {
+            return restTemplate.postForObject(url, body, Contenedor.class);
+        } catch (HttpStatusCodeException e) {
+            throw new RuntimeException("Error al crear el contenedor: " + e.getResponseBodyAsString());
         }
     }
 

@@ -39,7 +39,7 @@ public class ContenedorController {
             @ApiResponse(responseCode = "401", description = "No autorizado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    @PostMapping("")
+    @PostMapping("/crear")
     public ResponseEntity<?> crearContenedor(
             @RequestParam("ubicacion") String ubicacion,
             @RequestParam("codPostal") int codPostal,
