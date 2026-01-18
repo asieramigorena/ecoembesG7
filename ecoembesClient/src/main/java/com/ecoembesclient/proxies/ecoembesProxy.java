@@ -209,7 +209,7 @@ public class ecoembesProxy {
     public List<CapacidadPlantas> capacidadesPorFecha(LocalDate fecha){
         String url = creadorMensaje(
                 "/jornada/capacidades",   // endpoint real del backend
-                3,
+                1,
                 Arrays.asList(
                         "fecha", fecha.toString()
                 )
