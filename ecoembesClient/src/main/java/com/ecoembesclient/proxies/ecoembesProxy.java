@@ -18,8 +18,10 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.time.LocalDate;
+import java.util.Map;
 
 
 @Component
@@ -239,10 +241,10 @@ public class ecoembesProxy {
                 "capacidadMax", capMax
         ));
 
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("ubicacion", ubicacion);
-        body.add("codPostal", String.valueOf(codPostal));
-        body.add("capacidadMax", String.valueOf(capMax));
+        Map<String, Object> body = new HashMap<>();
+        body.put("ubicacion", ubicacion);
+        body.put("codPostal", codPostal);
+        body.put("capacidadMax", capMax);
 
         try {
             return restTemplate.postForObject(url, body, Contenedor.class);
@@ -250,6 +252,7 @@ public class ecoembesProxy {
             throw new RuntimeException("Error al crear el contenedor: " + e.getResponseBodyAsString());
         }
     }
+
 
 
 
