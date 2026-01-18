@@ -1,3 +1,3 @@
 package com.ecoembesclient.data;
 
-public record Contenedor(String nivel, int id, String ubicacion, int codPostal, double capMaxima, int numEnvases) {}
+public record Contenedor(int idContenedor, String ubicacion, int codPostal, double capMaxima, String nivelActual, int numEnvases) {}
